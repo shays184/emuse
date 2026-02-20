@@ -1,0 +1,205 @@
+# eMuse — Implementation Plan
+
+Refer to `spec.md` for full requirements, architecture, and data shape.
+
+## Open Questions
+
+- Which LLM provider for the free text path? Spec says OpenAI or equivalent — defaulting to OpenAI unless told otherwise.
+- Hosting: Vercel or Netlify? Defaulting to Vercel (good React/serverless support).
+- Deployment: not included in this plan. Ship locally first, deploy separately.
+
+## Tasks
+
+### Phase 0: Project Setup
+☐ Scaffold React + TypeScript + Tailwind project (Vite)
+☐ Create `.gitignore` (node_modules/, dist/, .env)
+☐ Set up project folder structure
+☐ Verify the app runs locally with a hello world page
+
+### Phase 1: Core Static Flow (Mood → Instrument → Progressions)
+☐ Create the static mood-progression JSON dataset using an LLM: 6 moods (Happy, Sad, Calm, Energetic, Melancholy, Romantic), 5 progressions per complexity level (1=beginner, 2=intermediate, 3=advanced) = 15 per mood, 90 total. Each progression includes chords, key, scale, complexity (1-3), and theory explanation.
+☐ Build the Landing screen — welcome headline, 6 mood tiles (above), free text input below the tiles (UI only, no AI wiring yet), "Surprise me" button — all on one screen
+☐ Build the Instrument Selection screen — Guitar / Piano choice, with back button to Landing
+☐ Build the Progressions screen — list sorted by complexity, expandable cards showing key, scale, theory, with back button to Instrument
+☐ Use state-based navigation (no React Router) — simple component swapping via a navigation state hook
+☐ Verify full flow works end to end
+
+### Phase 2: Progressions Enhancements
+☐ Add complexity filter (beginner / intermediate / advanced)
+☐ Compile list of all unique chords used across the dataset
+☐ Save chord diagram images from tab4u.com for each unique chord — fretboard diagrams for guitar, keyboard diagrams for piano. Store in `src/assets/chords/guitar/` and `src/assets/chords/piano/`
+☐ Add hover-to-preview on chord names — hovering a chord in a progression shows the chord diagram image as a tooltip/popover
+
+### Phase 3: Favorites
+☐ Add "Save to favorites" button on each progression
+☐ Implement localStorage persistence for favorites
+☐ Build Favorites overlay (accessible from persistent tab/icon)
+☐ Handle empty state (no favorites yet)
+
+### Phase 4: Free Text AI Path
+☐ Create `.env` with LLM API key (server-side only, add `.env` to `.gitignore`)
+☐ Create serverless function endpoint for free text mood input
+☐ Integrate LLM API (OpenAI) — send mood text, receive progressions
+☐ Wire the free text input on Landing screen to the serverless function — skips instrument selection, goes straight to Progressions
+☐ Display AI-generated progressions on the Progressions screen (minimal: no complexity sort, no theory annotations, no chord diagram hover)
+☐ Add loading state while waiting for LLM response
+☐ Add error handling (API failure, rate limit, empty response)
+
+### Phase 5: Security & Polish
+☐ Add rate limiting to the free text endpoint
+☐ Sanitize free text input before passing to LLM
+☐ Responsive layout pass — verify nothing breaks on small screens
+☐ Basic accessibility pass (keyboard navigation, semantic HTML)
+
+---
+
+## Phase 0: Project Setup
+
+**Affected Files:**
+- `package.json` (new) — project dependencies
+- `tsconfig.json` (new) — TypeScript config
+- `vite.config.ts` (new) — Vite config
+- `tailwind.config.js` (new) — Tailwind config
+- `.gitignore` (new) — exclude node_modules/, dist/, .env
+- `index.html` (new) — entry HTML
+- `src/main.tsx` (new) — React entry point
+- `src/App.tsx` (new) — root component
+- `src/index.css` (new) — Tailwind imports
+
+**Goal:** A running React + TypeScript + Tailwind project scaffolded with Vite. Clean folder structure ready for feature work.
+
+**Done means:** `npm run dev` serves a page in the browser with Tailwind styles working.
+
+**Test it:**
+1. Run `npm run dev`
+2. Open the browser — see a styled hello world page
+3. Confirm hot reload works by changing text
+
+---
+
+## Phase 1: Core Static Flow
+
+**Affected Files:**
+- `src/data/progressions.json` (new) — static mood-progression dataset (6 moods × 15 progressions = 90 total)
+- `src/pages/LandingPage.tsx` (new) — mood selection with welcome headline, 6 mood tiles (above), free text input (below, inactive), "Surprise me" button
+- `src/pages/InstrumentPage.tsx` (new) — guitar/piano selection with back button
+- `src/pages/ProgressionsPage.tsx` (new) — progression list with expandable theory cards, back button
+- `src/components/MoodTile.tsx` (new) — individual mood tile component
+- `src/components/ProgressionCard.tsx` (new) — expandable progression card
+- `src/hooks/useNavigation.ts` (new) — state-based navigation logic (no React Router)
+- `src/App.tsx` — integrate navigation state, render pages based on current screen
+
+**Goal:** The complete static flow works end to end. User picks a mood, picks an instrument, sees chord progressions with key, scale, and theory. This is the core value loop. Navigation is state-based — no React Router.
+
+**Done means:** Click any mood tile → choose guitar or piano → see a list of progressions sorted by complexity. Expand any progression to see key, scale, and theory explanation. "Surprise me" picks a random mood. Back buttons work on every screen.
+
+**Test it:**
+1. Open the app — see "eMuse" headline, tagline, 6 mood tiles, free text input (inactive), and "Surprise me" button
+2. Click "Melancholy" → see instrument selection (Guitar / Piano)
+3. Click back button on instrument screen → return to Landing
+4. Click "Melancholy" again → click "Guitar" → see progressions sorted by complexity
+5. Expand a progression → see key, scale, theory text
+6. Click back button on progressions screen → return to Instrument selection
+7. Click "Surprise me" on landing → confirm it picks a random mood and proceeds
+8. Navigate back to landing and pick a different mood — confirm different progressions appear
+
+---
+
+## Phase 2: Progressions Enhancements
+
+**Affected Files:**
+- `src/pages/ProgressionsPage.tsx` — add complexity filter
+- `src/components/ComplexityFilter.tsx` (new) — filter control component
+- `src/components/ChordTooltip.tsx` (new) — hover-to-preview tooltip showing chord diagram image
+- `src/components/ProgressionCard.tsx` — make chord names hoverable, integrate tooltip
+- `src/assets/chords/guitar/` (new) — chord diagram images for guitar (fretboard style, from tab4u.com)
+- `src/assets/chords/piano/` (new) — chord diagram images for piano (keyboard style, from tab4u.com)
+
+**Goal:** Progressions screen gets richer — users can filter by skill level and see chord diagrams on hover. Each chord name in a progression is hoverable, showing the diagram as a tooltip.
+
+**Done means:** Complexity filter narrows the progression list. Hovering any chord name shows the correct chord diagram image (fretboard for guitar, keyboard for piano). Tooltip disappears on mouse-out.
+
+**Test it:**
+1. Navigate to progressions → select "Beginner" filter → only beginner progressions appear
+2. Switch to "Advanced" → list updates accordingly
+3. With Guitar selected → hover a chord name (e.g., "Am") → see fretboard diagram in tooltip
+4. Move mouse away → tooltip disappears
+5. Go back, select Piano → hover a chord name → see keyboard diagram in tooltip
+
+---
+
+## Phase 3: Favorites
+
+**Affected Files:**
+- `src/components/ProgressionCard.tsx` — add "Save to favorites" button
+- `src/components/FavoritesOverlay.tsx` (new) — overlay showing saved progressions as a flat list (each item shows: mood, instrument, chords, key)
+- `src/hooks/useFavorites.ts` (new) — localStorage read/write logic for favorites
+- `src/App.tsx` — add favorites icon/tab in persistent UI
+
+**Goal:** Users can save progressions they like and access them from anywhere in the app. Favorites persist across sessions via localStorage.
+
+**Done means:** Save a progression → it appears in the Favorites overlay. Close and reopen the browser → favorites are still there. Remove a favorite → it disappears.
+
+**Test it:**
+1. Navigate to progressions → click "Save to favorites" on a progression
+2. Open the Favorites overlay → see the saved progression
+3. Save a second progression → both appear in favorites
+4. Remove one → only one remains
+5. Refresh the browser → favorites persist
+6. Open favorites with nothing saved → see an empty state message
+
+---
+
+## Phase 4: Free Text AI Path
+
+**Affected Files:**
+- `.env` (new) — LLM API key (server-side only)
+- `.gitignore` — verify `.env` is listed (should already exist from Phase 0)
+- `api/generate-progressions.ts` (new) — serverless function for LLM calls
+- `src/pages/LandingPage.tsx` — wire free text input to serverless function (skips instrument selection)
+- `src/pages/ProgressionsPage.tsx` — handle AI-generated progressions (no complexity sort, no theory, no chord hover)
+- `src/services/api.ts` (new) — client-side API call to serverless function
+
+**Local dev:** Use Vercel CLI (`vercel dev`) to run the serverless function locally alongside the Vite dev server. Install `vercel` as a dev dependency.
+
+**Goal:** The free text mood path works. User types a mood description, the app calls the LLM, and returns matching progressions.
+
+**LLM Integration Details:**
+- Prompt: Send the user's free text mood description. Request 3-5 chord progressions matching that mood, each with chords and key. No complexity sorting or theory required.
+- Expected response shape from LLM (parse and validate before displaying):
+  ```json
+  {
+    "progressions": [
+      { "chords": ["Am", "F", "C", "G"], "key": "Am" }
+    ]
+  }
+  ```
+- If the LLM response doesn't match the expected shape, show an error to the user.
+
+**Done means:** Type "nostalgic but hopeful, like driving home at sunset" → skip instrument selection → see chord progressions returned by the LLM. Loading state appears while waiting. Error state appears if the API fails.
+
+**Test it:**
+1. Type a mood description in the free text input → click submit
+2. See a loading indicator
+3. See progressions appear (no complexity sorting, no theory annotations — just chords with basic context)
+4. Try with different mood descriptions → get different results
+5. Disconnect network / simulate API failure → see an error message
+6. Verify the LLM API key is not visible in browser dev tools (network tab)
+
+---
+
+## Phase 5: Security & Polish
+
+**Affected Files:**
+- `api/generate-progressions.ts` — add rate limiting, input sanitization
+- `src/` (various) — responsive layout fixes, semantic HTML, keyboard navigation
+
+**Goal:** The app is secure, accessible, and doesn't break on small screens. Ready for real users.
+
+**Done means:** Free text endpoint rejects excessive requests. All screens render correctly on a narrow viewport. Basic keyboard navigation works.
+
+**Test it:**
+1. Submit free text rapidly many times → rate limit kicks in with a user-friendly message
+2. Submit free text with script tags or special characters → confirm input is sanitized
+3. Resize browser to phone width → all three screens render without overflow or broken layout
+4. Tab through the app using keyboard only → all interactive elements are reachable
