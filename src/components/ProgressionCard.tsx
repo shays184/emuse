@@ -63,19 +63,23 @@ export function ProgressionCard({ progression, index }: ProgressionCardProps) {
 
       {expanded && (
         <div className="border-t border-gray-200 px-4 pb-4 pt-3 dark:border-gray-700">
-          <div className="mb-3 flex gap-4 text-sm">
-            <div>
-              <span className="font-medium text-text-secondary-light dark:text-text-secondary-dark">
-                Scale:{" "}
-              </span>
-              <span className="text-text-light dark:text-text-dark">
-                {progression.scale}
-              </span>
-            </div>
+          <div className="mb-3 inline-block rounded-lg bg-primary/5 px-3 py-2 text-sm dark:bg-primary-light/5">
+            <span className="text-xs font-medium text-text-secondary-light dark:text-text-secondary-dark">
+              Scale:{" "}
+            </span>
+            <span className="font-semibold text-text-light dark:text-text-dark">
+              {progression.scale}
+            </span>
           </div>
-          <p className="text-sm leading-relaxed text-text-secondary-light dark:text-text-secondary-dark">
-            {progression.theory}
-          </p>
+
+          <div className="rounded-lg bg-secondary/5 px-4 py-3 dark:bg-secondary-light/5">
+            <span className="mb-1 block text-xs font-medium text-secondary dark:text-secondary-light">
+              Why it works
+            </span>
+            <p className="text-sm leading-relaxed text-text-light dark:text-text-dark">
+              {progression.theory}
+            </p>
+          </div>
         </div>
       )}
     </div>
