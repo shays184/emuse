@@ -1,0 +1,662 @@
+[
+  {
+    "mood": "Happy",
+    "progressions": [
+      {
+        "chords": ["C", "G", "Am", "F"],
+        "complexity": 1,
+        "key": "C",
+        "scale": "C Major",
+        "theory": "The I-V-vi-IV progression is the most popular in modern pop — its resolution from Am back to F creates an uplifting, familiar loop."
+      },
+      {
+        "chords": ["G", "C", "D", "C"],
+        "complexity": 1,
+        "key": "G",
+        "scale": "G Major",
+        "theory": "A simple I-IV-V-IV turnaround that stays bright by never touching a minor chord."
+      },
+      {
+        "chords": ["D", "G", "A", "G"],
+        "complexity": 1,
+        "key": "D",
+        "scale": "D Major",
+        "theory": "The I-IV-V-IV in D major keeps energy high — the open A and G chords ring naturally on guitar."
+      },
+      {
+        "chords": ["A", "D", "E", "D"],
+        "complexity": 1,
+        "key": "A",
+        "scale": "A Major",
+        "theory": "Major chords only — the V chord (E) pulls strongly back to A, creating a satisfying, sunny cycle."
+      },
+      {
+        "chords": ["F", "C", "G", "C"],
+        "complexity": 1,
+        "key": "C",
+        "scale": "C Major",
+        "theory": "IV-I-V-I is a classic hymn-like progression that feels uplifting and resolved."
+      },
+      {
+        "chords": ["C", "Am", "Dm", "G"],
+        "complexity": 2,
+        "key": "C",
+        "scale": "C Major",
+        "theory": "The I-vi-ii-V is a classic jazz-pop turnaround — the ii-V movement at the end adds forward motion while keeping things cheerful."
+      },
+      {
+        "chords": ["G", "Em", "C", "D"],
+        "complexity": 2,
+        "key": "G",
+        "scale": "G Major",
+        "theory": "I-vi-IV-V mixes major brightness with a brief minor dip on Em, adding emotional depth without losing the happy feel."
+      },
+      {
+        "chords": ["D", "Bm", "G", "A"],
+        "complexity": 2,
+        "key": "D",
+        "scale": "D Major",
+        "theory": "I-vi-IV-V in D — the Bm adds a touch of warmth before the G and A lift the progression back up."
+      },
+      {
+        "chords": ["A", "E", "F#m", "D"],
+        "complexity": 2,
+        "key": "A",
+        "scale": "A Major",
+        "theory": "I-V-vi-IV with the F#m providing a gentle emotional tug before D resolves back to brightness."
+      },
+      {
+        "chords": ["E", "B", "C#m", "A"],
+        "complexity": 2,
+        "key": "E",
+        "scale": "E Major",
+        "theory": "I-V-vi-IV in E major — the C#m adds a bittersweet moment, but the A chord keeps the overall mood optimistic."
+      },
+      {
+        "chords": ["Cmaj7", "Dm7", "Em7", "Fmaj7"],
+        "complexity": 3,
+        "key": "C",
+        "scale": "C Major",
+        "theory": "Ascending diatonic sevenths (Imaj7-ii7-iii7-IVmaj7) create a dreamy, sophisticated happiness — common in neo-soul and jazz pop."
+      },
+      {
+        "chords": ["Fmaj7", "Em7", "Dm7", "Cmaj7"],
+        "complexity": 3,
+        "key": "C",
+        "scale": "C Major",
+        "theory": "Descending diatonic sevenths create a gentle cascading effect — joyful but with harmonic richness."
+      },
+      {
+        "chords": ["Gmaj7", "Am7", "Bm7", "Cmaj7"],
+        "complexity": 3,
+        "key": "G",
+        "scale": "G Major",
+        "theory": "Stepwise ascending motion through diatonic sevenths builds anticipation and warmth — each chord feels like climbing toward sunlight."
+      },
+      {
+        "chords": ["D", "F#m", "Gmaj7", "A7"],
+        "complexity": 3,
+        "key": "D",
+        "scale": "D Major",
+        "theory": "The I-iii-IVmaj7-V7 movement uses the iii chord for color and the dominant 7th to create a jazzy, buoyant resolution."
+      },
+      {
+        "chords": ["Amaj7", "C#m7", "Dmaj7", "E7"],
+        "complexity": 3,
+        "key": "A",
+        "scale": "A Major",
+        "theory": "Imaj7-iii7-IVmaj7-V7 — seventh chords add sophistication while the major tonality keeps the mood bright and joyful."
+      }
+    ]
+  },
+  {
+    "mood": "Sad",
+    "progressions": [
+      {
+        "chords": ["Am", "F", "C", "G"],
+        "complexity": 1,
+        "key": "Am",
+        "scale": "A Natural Minor",
+        "theory": "Starting on the minor tonic and moving to major chords creates a sense of reaching for hope but never quite arriving."
+      },
+      {
+        "chords": ["Em", "C", "G", "D"],
+        "complexity": 1,
+        "key": "Em",
+        "scale": "E Natural Minor",
+        "theory": "The i-VI-III-VII movement drifts between minor and major, evoking sadness with moments of light."
+      },
+      {
+        "chords": ["Dm", "Am", "Em", "Am"],
+        "complexity": 1,
+        "key": "Am",
+        "scale": "A Natural Minor",
+        "theory": "All minor chords — the iv-i-v-i cycle stays in darkness, creating a heavy, sorrowful atmosphere."
+      },
+      {
+        "chords": ["Am", "Dm", "G", "C"],
+        "complexity": 1,
+        "key": "Am",
+        "scale": "A Natural Minor",
+        "theory": "i-iv-VII-III moves from sadness toward a brief major resolution, like a sigh that never fully releases."
+      },
+      {
+        "chords": ["Em", "Am", "D", "G"],
+        "complexity": 1,
+        "key": "Em",
+        "scale": "E Natural Minor",
+        "theory": "i-iv-VII-III in E minor — the D and G majors provide fleeting brightness before Em pulls you back down."
+      },
+      {
+        "chords": ["Am", "F", "Dm", "E"],
+        "complexity": 2,
+        "key": "Am",
+        "scale": "A Harmonic Minor",
+        "theory": "The major V chord (E) borrowed from harmonic minor creates a dramatic pull back to Am — sadness with theatrical tension."
+      },
+      {
+        "chords": ["Dm", "Bb", "F", "C"],
+        "complexity": 2,
+        "key": "Dm",
+        "scale": "D Natural Minor",
+        "theory": "i-VI-III-VII in D minor — the Bb adds weight and the F-C movement teases resolution without delivering it."
+      },
+      {
+        "chords": ["Em", "C", "Am", "B"],
+        "complexity": 2,
+        "key": "Em",
+        "scale": "E Harmonic Minor",
+        "theory": "The major V (B) from harmonic minor adds a classical, almost tragic quality to the resolution back to Em."
+      },
+      {
+        "chords": ["Am", "G", "F", "E"],
+        "complexity": 2,
+        "key": "Am",
+        "scale": "A Harmonic Minor",
+        "theory": "Descending bass line (A-G-F-E) creates an Andalusian cadence — one of the oldest and most powerful expressions of sorrow in Western music."
+      },
+      {
+        "chords": ["Cm", "Ab", "Eb", "Bb"],
+        "complexity": 2,
+        "key": "Cm",
+        "scale": "C Natural Minor",
+        "theory": "i-VI-III-VII in C minor — the flat keys give a darker, heavier color than sharp-key minor progressions."
+      },
+      {
+        "chords": ["Am7", "Fmaj7", "Dm7", "E7"],
+        "complexity": 3,
+        "key": "Am",
+        "scale": "A Harmonic Minor",
+        "theory": "Seventh chords soften the edges of sadness — the Dm7 to E7 resolution adds jazz-inflected melancholy."
+      },
+      {
+        "chords": ["Em9", "Cmaj7", "Am7", "B7"],
+        "complexity": 3,
+        "key": "Em",
+        "scale": "E Harmonic Minor",
+        "theory": "The Em9 opens with lush sadness, while B7 provides a dramatic dominant pull — sophisticated and deeply emotional."
+      },
+      {
+        "chords": ["Dm7", "G7", "Cmaj7", "Fmaj7"],
+        "complexity": 3,
+        "key": "Am",
+        "scale": "A Natural Minor",
+        "theory": "A ii-V-I-IV in the relative major (C) — sounds sad because context and melody keep it minor-leaning despite major harmony."
+      },
+      {
+        "chords": ["Am", "Am/G", "Fmaj7", "E7"],
+        "complexity": 3,
+        "key": "Am",
+        "scale": "A Harmonic Minor",
+        "theory": "The descending bass (A-G-F-E) with slash chords and sevenths creates a cinematic, slowly falling feeling."
+      },
+      {
+        "chords": ["Bm7", "Gmaj7", "Em7", "F#7"],
+        "complexity": 3,
+        "key": "Bm",
+        "scale": "B Harmonic Minor",
+        "theory": "i7-VI7-iv7-V7 in B minor — the major seventh chords add shimmer to the darkness, like moonlight on water."
+      }
+    ]
+  },
+  {
+    "mood": "Calm",
+    "progressions": [
+      {
+        "chords": ["C", "Am", "F", "G"],
+        "complexity": 1,
+        "key": "C",
+        "scale": "C Major",
+        "theory": "I-vi-IV-V moves gently between stability and motion — predictable enough to feel safe, varied enough to stay interesting."
+      },
+      {
+        "chords": ["G", "C", "G", "C"],
+        "complexity": 1,
+        "key": "G",
+        "scale": "G Major",
+        "theory": "A simple two-chord alternation between I and IV — meditative repetition creates a sense of stillness."
+      },
+      {
+        "chords": ["D", "A", "G", "A"],
+        "complexity": 1,
+        "key": "D",
+        "scale": "D Major",
+        "theory": "I-V-IV-V gently rocks between two stable major chords — like a hammock swaying."
+      },
+      {
+        "chords": ["Am", "C", "G", "F"],
+        "complexity": 1,
+        "key": "C",
+        "scale": "C Major",
+        "theory": "Starting on vi gives a contemplative feel while staying in a major key — peaceful with a touch of introspection."
+      },
+      {
+        "chords": ["Em", "G", "D", "C"],
+        "complexity": 1,
+        "key": "G",
+        "scale": "G Major",
+        "theory": "vi-I-V-IV creates a wide, open sound — the spacing between chords gives each one room to breathe."
+      },
+      {
+        "chords": ["C", "Em", "Am", "G"],
+        "complexity": 2,
+        "key": "C",
+        "scale": "C Major",
+        "theory": "I-iii-vi-V uses the iii chord (Em) as a gentle stepping stone — adds color without disrupting the calm."
+      },
+      {
+        "chords": ["G", "Bm", "C", "D"],
+        "complexity": 2,
+        "key": "G",
+        "scale": "G Major",
+        "theory": "I-iii-IV-V — the Bm provides a brief moment of depth before the familiar IV-V resolution settles things back."
+      },
+      {
+        "chords": ["D", "F#m", "G", "A"],
+        "complexity": 2,
+        "key": "D",
+        "scale": "D Major",
+        "theory": "I-iii-IV-V in D major — the F#m adds warmth and the G-A resolution feels like a gentle exhale."
+      },
+      {
+        "chords": ["Am", "F", "C", "Em"],
+        "complexity": 2,
+        "key": "Am",
+        "scale": "A Natural Minor",
+        "theory": "i-VI-III-v stays suspended — ending on Em instead of a strong resolution keeps the mood floating and serene."
+      },
+      {
+        "chords": ["F", "Am", "G", "C"],
+        "complexity": 2,
+        "key": "C",
+        "scale": "C Major",
+        "theory": "IV-vi-V-I — starting on the subdominant creates a gentle, unhurried approach to resolution."
+      },
+      {
+        "chords": ["Cmaj7", "Am7", "Fmaj7", "G7"],
+        "complexity": 3,
+        "key": "C",
+        "scale": "C Major",
+        "theory": "Adding sevenths to the classic I-vi-IV-V softens every chord — the extended harmony creates a warm, ambient blanket of sound."
+      },
+      {
+        "chords": ["Dmaj7", "F#m7", "Gmaj7", "Em7"],
+        "complexity": 3,
+        "key": "D",
+        "scale": "D Major",
+        "theory": "Imaj7-iii7-IVmaj7-ii7 — all diatonic sevenths, no dominant tension. The progression floats without ever feeling like it needs to resolve."
+      },
+      {
+        "chords": ["Gmaj7", "Em7", "Am7", "D7"],
+        "complexity": 3,
+        "key": "G",
+        "scale": "G Major",
+        "theory": "Imaj7-vi7-ii7-V7 — a jazz-inflected turnaround that resolves gently. The seventh chords keep everything smooth."
+      },
+      {
+        "chords": ["Fmaj7", "Cmaj7", "Dm7", "Em7"],
+        "complexity": 3,
+        "key": "C",
+        "scale": "C Major",
+        "theory": "IV7-I7-ii7-iii7 — ascending stepwise from Dm7 to Em7 creates a slow, meditative climb."
+      },
+      {
+        "chords": ["Amaj7", "F#m7", "Dmaj7", "E7"],
+        "complexity": 3,
+        "key": "A",
+        "scale": "A Major",
+        "theory": "Imaj7-vi7-IVmaj7-V7 — the major sevenths create a lush, spa-like tranquility. The E7 gently nudges back to the top."
+      }
+    ]
+  },
+  {
+    "mood": "Energetic",
+    "progressions": [
+      {
+        "chords": ["E", "A", "B", "A"],
+        "complexity": 1,
+        "key": "E",
+        "scale": "E Major",
+        "theory": "I-IV-V-IV in E — all power chords, strong root movement. The V-IV-I pull creates a driving, headbanging energy."
+      },
+      {
+        "chords": ["A", "D", "E", "A"],
+        "complexity": 1,
+        "key": "A",
+        "scale": "A Major",
+        "theory": "I-IV-V-I is the simplest rock progression — each chord hits hard and resolves with authority."
+      },
+      {
+        "chords": ["G", "C", "D", "D"],
+        "complexity": 1,
+        "key": "G",
+        "scale": "G Major",
+        "theory": "Doubling the V chord (D) at the end builds anticipation before snapping back to G — a classic rock turnaround."
+      },
+      {
+        "chords": ["D", "A", "G", "A"],
+        "complexity": 1,
+        "key": "D",
+        "scale": "D Major",
+        "theory": "I-V-IV-V — the repeated return to A (V) creates a pulsing, restless energy that drives forward."
+      },
+      {
+        "chords": ["C", "F", "G", "G"],
+        "complexity": 1,
+        "key": "C",
+        "scale": "C Major",
+        "theory": "I-IV-V-V — holding on G creates tension that explodes when it resolves back to C. Simple, punchy, effective."
+      },
+      {
+        "chords": ["E", "G", "A", "B"],
+        "complexity": 2,
+        "key": "E",
+        "scale": "E Mixolydian",
+        "theory": "I-bIII-IV-V borrows the flat third (G) from minor — this major/minor ambiguity is the backbone of rock and blues energy."
+      },
+      {
+        "chords": ["Am", "C", "G", "F"],
+        "complexity": 2,
+        "key": "Am",
+        "scale": "A Natural Minor",
+        "theory": "i-III-VII-VI in A minor — the descending quality creates an intense, urgent drive used in countless rock anthems."
+      },
+      {
+        "chords": ["D", "F", "C", "G"],
+        "complexity": 2,
+        "key": "C",
+        "scale": "C Major",
+        "theory": "V-IV-I shifted with a borrowed IV (F approached from D) — the unexpected movement creates excitement and momentum."
+      },
+      {
+        "chords": ["A", "C", "D", "E"],
+        "complexity": 2,
+        "key": "A",
+        "scale": "A Mixolydian",
+        "theory": "I-bIII-IV-V — the borrowed flat third (C) adds a bluesy punch. Four ascending chords build relentless forward energy."
+      },
+      {
+        "chords": ["Em", "G", "D", "A"],
+        "complexity": 2,
+        "key": "Em",
+        "scale": "E Natural Minor",
+        "theory": "i-III-VII-IV — borrowing A major from Dorian mode adds an unexpected brightness that electrifies the minor key."
+      },
+      {
+        "chords": ["E7", "A7", "B7", "A7"],
+        "complexity": 3,
+        "key": "E",
+        "scale": "E Mixolydian",
+        "theory": "A 12-bar blues skeleton condensed to four chords — dominant sevenths add grit and tension that never fully resolves."
+      },
+      {
+        "chords": ["A5", "C5", "D5", "E5"],
+        "complexity": 3,
+        "key": "A",
+        "scale": "A Minor Pentatonic",
+        "theory": "Power chord riff ascending in fourths — stripping to root-fifth removes harmony, leaving raw rhythmic aggression."
+      },
+      {
+        "chords": ["Em", "C", "G", "D", "Am", "Em"],
+        "complexity": 3,
+        "key": "Em",
+        "scale": "E Natural Minor",
+        "theory": "A six-chord cycle that builds momentum through sheer length — the return to Em after six changes feels like a victory lap."
+      },
+      {
+        "chords": ["G", "Bb", "C", "D"],
+        "complexity": 3,
+        "key": "G",
+        "scale": "G Mixolydian",
+        "theory": "I-bIII-IV-V — the Bb borrowed from G minor adds a blues-rock swagger. Ascending root motion drives the energy upward."
+      },
+      {
+        "chords": ["D", "D/F#", "G", "A7"],
+        "complexity": 3,
+        "key": "D",
+        "scale": "D Major",
+        "theory": "The walking bass (D-F#-G-A) in the slash chord creates a marching, anthemic build. The A7 snaps it back to the top."
+      }
+    ]
+  },
+  {
+    "mood": "Melancholy",
+    "progressions": [
+      {
+        "chords": ["Am", "F", "C", "G"],
+        "complexity": 1,
+        "key": "Am",
+        "scale": "A Natural Minor",
+        "theory": "The i-VI-III-VII creates a sense of longing by never fully resolving — each major chord offers hope, but Am always pulls you back."
+      },
+      {
+        "chords": ["Em", "C", "G", "D"],
+        "complexity": 1,
+        "key": "Em",
+        "scale": "E Natural Minor",
+        "theory": "i-VI-III-VII in E minor — the wide intervals between chords create an open, aching quality."
+      },
+      {
+        "chords": ["Dm", "F", "C", "Am"],
+        "complexity": 1,
+        "key": "Dm",
+        "scale": "D Natural Minor",
+        "theory": "i-III-VII-v — ending on Am instead of resolving keeps the melancholy suspended, unfinished."
+      },
+      {
+        "chords": ["Am", "Em", "F", "C"],
+        "complexity": 1,
+        "key": "Am",
+        "scale": "A Natural Minor",
+        "theory": "i-v-VI-III — moving between minor chords first deepens the sadness before the major chords offer brief relief."
+      },
+      {
+        "chords": ["Em", "Am", "C", "G"],
+        "complexity": 1,
+        "key": "Em",
+        "scale": "E Natural Minor",
+        "theory": "i-iv-VI-III — the iv chord (Am) deepens the minor color before drifting to the warmer major chords."
+      },
+      {
+        "chords": ["Am", "G", "F", "E"],
+        "complexity": 2,
+        "key": "Am",
+        "scale": "A Harmonic Minor",
+        "theory": "The Andalusian cadence — a descending bass line (A-G-F-E) creates one of music's most recognizable expressions of bittersweet longing."
+      },
+      {
+        "chords": ["Dm", "Bb", "F", "A"],
+        "complexity": 2,
+        "key": "Dm",
+        "scale": "D Harmonic Minor",
+        "theory": "i-VI-III-V — the major V (A) from harmonic minor adds a dramatic, almost cinematic pull back to Dm."
+      },
+      {
+        "chords": ["Em", "D", "C", "Bm"],
+        "complexity": 2,
+        "key": "Em",
+        "scale": "E Natural Minor",
+        "theory": "Descending stepwise (E-D-C-B) — each chord drops a whole step, creating a slow, inevitable descent into deeper emotion."
+      },
+      {
+        "chords": ["Am", "Dm", "E", "Am"],
+        "complexity": 2,
+        "key": "Am",
+        "scale": "A Harmonic Minor",
+        "theory": "i-iv-V-i is a classical minor cadence — the E major (V) from harmonic minor gives the return to Am a weighty, inevitable quality."
+      },
+      {
+        "chords": ["Cm", "Ab", "Eb", "Fm"],
+        "complexity": 2,
+        "key": "Cm",
+        "scale": "C Natural Minor",
+        "theory": "i-VI-III-iv — the flat keys create a darker palette, and ending on Fm (iv) deepens the melancholy instead of resolving it."
+      },
+      {
+        "chords": ["Am7", "Fmaj7", "Cmaj7", "G"],
+        "complexity": 3,
+        "key": "Am",
+        "scale": "A Natural Minor",
+        "theory": "Seventh chords blur the boundaries between sadness and beauty — the Fmaj7 and Cmaj7 shimmer against the minor tonic."
+      },
+      {
+        "chords": ["Em7", "Cmaj7", "Am7", "B7"],
+        "complexity": 3,
+        "key": "Em",
+        "scale": "E Harmonic Minor",
+        "theory": "i7-VImaj7-iv7-V7 — the B7 pulls back to Em with dramatic force, like an unresolvable ache."
+      },
+      {
+        "chords": ["Dm9", "Bbmaj7", "Gm7", "A7"],
+        "complexity": 3,
+        "key": "Dm",
+        "scale": "D Harmonic Minor",
+        "theory": "The Dm9 opens with rich sadness, the Gm7 (iv7) adds depth, and A7 creates a restless pull back — sophisticated heartbreak."
+      },
+      {
+        "chords": ["Am", "Am/G", "Fmaj7", "Dm7"],
+        "complexity": 3,
+        "key": "Am",
+        "scale": "A Natural Minor",
+        "theory": "Descending bass with slash chords (A-G-F-D) — a slow, cinematic fall. The Dm7 ending leaves things achingly unresolved."
+      },
+      {
+        "chords": ["F#m7", "Dmaj7", "Amaj7", "E7"],
+        "complexity": 3,
+        "key": "F#m",
+        "scale": "F# Harmonic Minor",
+        "theory": "i7-VImaj7-IIImaj7-VII7 — the major seventh chords create a bittersweet glow around the minor tonic, like remembering something beautiful that's gone."
+      }
+    ]
+  },
+  {
+    "mood": "Romantic",
+    "progressions": [
+      {
+        "chords": ["C", "Am", "F", "G"],
+        "complexity": 1,
+        "key": "C",
+        "scale": "C Major",
+        "theory": "I-vi-IV-V — the 'Heart and Soul' progression. The vi (Am) adds just enough tenderness to turn a happy progression intimate."
+      },
+      {
+        "chords": ["G", "Em", "C", "D"],
+        "complexity": 1,
+        "key": "G",
+        "scale": "G Major",
+        "theory": "I-vi-IV-V in G — warm, open voicings. The Em adds a touch of vulnerability that makes the brightness feel personal."
+      },
+      {
+        "chords": ["D", "Bm", "G", "A"],
+        "complexity": 1,
+        "key": "D",
+        "scale": "D Major",
+        "theory": "I-vi-IV-V in D — the Bm brings a wistful quality, like looking at someone across a room."
+      },
+      {
+        "chords": ["F", "Am", "C", "G"],
+        "complexity": 1,
+        "key": "C",
+        "scale": "C Major",
+        "theory": "IV-vi-I-V — starting on the subdominant (F) creates a gentle, yearning approach rather than a direct statement."
+      },
+      {
+        "chords": ["A", "F#m", "D", "E"],
+        "complexity": 1,
+        "key": "A",
+        "scale": "A Major",
+        "theory": "I-vi-IV-V in A — the F#m has a tender, introspective quality that pairs naturally with romantic lyrics."
+      },
+      {
+        "chords": ["C", "Em", "F", "G"],
+        "complexity": 2,
+        "key": "C",
+        "scale": "C Major",
+        "theory": "I-iii-IV-V — the iii chord (Em) is rarer and more intimate than vi, creating a sense of private, quiet romance."
+      },
+      {
+        "chords": ["G", "B7", "Em", "C"],
+        "complexity": 2,
+        "key": "G",
+        "scale": "G Major",
+        "theory": "I-III7-vi-IV — the B7 (secondary dominant of Em) adds a passionate pull toward the vi chord, like a heart skipping a beat."
+      },
+      {
+        "chords": ["D", "A", "Bm", "G"],
+        "complexity": 2,
+        "key": "D",
+        "scale": "D Major",
+        "theory": "I-V-vi-IV — placing the minor chord after the dominant creates a swell-and-settle pattern, like waves of emotion."
+      },
+      {
+        "chords": ["Am", "F", "G", "C"],
+        "complexity": 2,
+        "key": "C",
+        "scale": "C Major",
+        "theory": "vi-IV-V-I — starting minor and resolving to major mirrors the arc of falling in love: vulnerability leading to joy."
+      },
+      {
+        "chords": ["E", "C#m", "A", "B"],
+        "complexity": 2,
+        "key": "E",
+        "scale": "E Major",
+        "theory": "I-vi-IV-V in E — the C#m has a particularly tender sound, and the B chord provides a strong, passionate resolution."
+      },
+      {
+        "chords": ["Cmaj7", "Am7", "Dm7", "G7"],
+        "complexity": 3,
+        "key": "C",
+        "scale": "C Major",
+        "theory": "Imaj7-vi7-ii7-V7 — the jazz standard turnaround. Seventh chords make every transition silky, like candlelight on everything."
+      },
+      {
+        "chords": ["Fmaj7", "Em7", "Dm7", "G7"],
+        "complexity": 3,
+        "key": "C",
+        "scale": "C Major",
+        "theory": "IVmaj7-iii7-ii7-V7 — descending stepwise through seventh chords creates an irresistible romantic pull toward resolution."
+      },
+      {
+        "chords": ["Dmaj7", "Bm7", "Gmaj7", "A7"],
+        "complexity": 3,
+        "key": "D",
+        "scale": "D Major",
+        "theory": "Imaj7-vi7-IVmaj7-V7 — the major sevenths add warmth and the vi7 (Bm7) adds vulnerability. Classic jazz ballad harmony."
+      },
+      {
+        "chords": ["Gmaj7", "Em7", "Am7", "D7"],
+        "complexity": 3,
+        "key": "G",
+        "scale": "G Major",
+        "theory": "Imaj7-vi7-ii7-V7 — the ii7-V7 resolution is the most romantic cadence in jazz. It sounds like coming home to someone."
+      },
+      {
+        "chords": ["Amaj7", "F#m7", "Dmaj7", "E7"],
+        "complexity": 3,
+        "key": "A",
+        "scale": "A Major",
+        "theory": "Imaj7-vi7-IVmaj7-V7 — lush seventh chords throughout. The E7 resolves back to Amaj7 like a long, slow kiss."
+      }
+    ]
+  }
+]

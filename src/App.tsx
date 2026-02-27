@@ -1,14 +1,31 @@
+import { useNavigation } from "./hooks/useNavigation";
+import { LandingPage } from "./pages/LandingPage";
+import { InstrumentPage } from "./pages/InstrumentPage";
+import { ProgressionsPage } from "./pages/ProgressionsPage";
+
 function App() {
-  return (
-    <div className="flex min-h-screen flex-col items-center justify-center px-4">
-      <h1 className="mb-3 text-5xl font-bold text-primary dark:text-primary-light">
-        eMuse
-      </h1>
-      <p className="text-lg text-text-secondary-light dark:text-text-secondary-dark">
-        Pick your mood. Get your chords. Start playing.
-      </p>
-    </div>
-  );
+  const nav = useNavigation();
+
+  switch (nav.screen) {
+    case "instrument":
+      return (
+        <InstrumentPage
+          mood={nav.selectedMood!}
+          onSelect={nav.goToProgressions}
+          onBack={nav.goBack}
+        />
+      );
+    case "progressions":
+      return (
+        <ProgressionsPage
+          mood={nav.selectedMood!}
+          instrument={nav.selectedInstrument!}
+          onBack={nav.goBack}
+        />
+      );
+    default:
+      return <LandingPage onMoodSelect={nav.goToInstrument} />;
+  }
 }
 
 export default App;
