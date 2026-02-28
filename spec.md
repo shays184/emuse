@@ -105,15 +105,15 @@ Each mood contains 15 progressions: 5 per complexity level (1=beginner, 2=interm
 
 ## Parking Lot — What's Out (for now)
 
-- Audio preview / playback of progressions
+- ~~Audio preview / playback of progressions~~ — **Done.** Web Audio API synth plays chords in sequence with active chord highlighting.
 - User accounts and server-side persistence
 - Instruments beyond guitar and piano
 - Social features (sharing, community)
 - Complexity sorting and theory annotations for the free text AI path
 - More granular / nuanced mood options
 - PWA (service worker + web manifest for home screen install)
-- Mood color atmosphere — shift app color palette to match the selected mood
-- "Songs like this" — show well-known songs that use the same progression
+- ~~Mood color atmosphere~~ — **Done.** Theme toggle with Mood mode shifts background gradient per mood.
+- ~~"Songs like this"~~ — **Done.** Roman numeral analysis matches progression patterns to 50+ famous songs.
 - Chord diagram tap-to-reveal for mobile (replace hover with tap)
 
 ## Technology

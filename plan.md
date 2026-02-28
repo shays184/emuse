@@ -53,6 +53,21 @@ Refer to `spec.md` for full requirements, architecture, and data shape.
 ☑ Responsive layout pass — 2-col mood grid on mobile, stacked instrument buttons, full-width favorites overlay
 ☑ Basic accessibility pass — semantic HTML (main/nav/section/article), Escape closes overlay, focus management, aria-labels
 
+### Phase 5.1: Audio Preview & Songs Like This
+☑ Audio playback via Web Audio API — triangle wave synth, ~0.75s per chord, play/stop button on each card
+☑ Active chord highlighting during playback (purple background on currently sounding chord)
+☑ "Songs like this" — Roman numeral analysis maps chord patterns to famous songs (25+ patterns, 50+ songs)
+☑ Subsequence matching — 5-6 chord progressions match if a 3-4 chord window matches a known pattern
+☑ Minor key support — correct Roman numeral analysis for both major and minor keys
+☑ Features available in both ProgressionCard and FavoritesOverlay
+
+### Cosmetic: Theme Toggle
+☑ 3-mode theme toggle (Dark / Light / Mood) — button in bottom-left corner, cycles through modes
+☑ Light mode — warm off-white background, dark text
+☑ Mood mode — per-mood pastel gradient backgrounds with automatic dark/light text for readability
+☑ Theme preference persists in localStorage
+☑ Smooth background transitions (0.6s ease)
+
 ---
 
 ## Phase 0: Project Setup

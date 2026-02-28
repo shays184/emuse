@@ -46,7 +46,8 @@ emuse/
 │   ├── index.css          # Tailwind imports
 │   ├── data/
 │   │   ├── progressions.json      # Static mood-progression dataset (90 entries)
-│   │   └── chordData.ts           # Fingering data for 46 chords (guitar frets + piano notes)
+│   │   ├── chordData.ts           # Fingering data for 46 chords (guitar frets + piano notes)
+│   │   └── songData.ts            # Roman numeral analysis + famous songs pattern database
 │   ├── pages/
 │   │   ├── LandingPage.tsx        # Mood selection, free text input
 │   │   ├── InstrumentPage.tsx     # Guitar / Piano choice
@@ -58,12 +59,15 @@ emuse/
 │   │   ├── ChordTooltip.tsx       # Hover wrapper — shows diagram tooltip, voicing nav
 │   │   ├── GuitarDiagram.tsx      # SVG fretboard renderer (dots, barres, open/muted)
 │   │   ├── PianoDiagram.tsx       # SVG piano keyboard renderer (highlighted keys + note names)
-│   │   └── FavoritesOverlay.tsx   # Slide-in panel with expandable favorite cards + tooltips
+│   │   ├── FavoritesOverlay.tsx   # Slide-in panel with expandable favorite cards + tooltips
+│   │   └── ThemeToggle.tsx        # Theme mode toggle button (Dark/Light/Mood)
 │   ├── hooks/
 │   │   ├── useNavigation.ts       # State-based navigation (no React Router)
-│   │   └── useFavorites.ts        # localStorage persistence (add/remove/toggle/isFavorite)
+│   │   ├── useFavorites.ts        # localStorage persistence (add/remove/toggle/isFavorite)
+│   │   └── useTheme.ts            # 3-mode theme (dark/light/mood) with localStorage persistence
 │   ├── services/
-│   │   └── api.ts                 # Client-side API call (generateProgressions)
+│   │   ├── api.ts                 # Client-side API call (generateProgressions)
+│   │   └── audioEngine.ts         # Web Audio API chord synthesis (play/stop progressions)
 ```
 
 ## Technology Stack
@@ -105,7 +109,7 @@ The only external runtime dependency is the OpenAI API, used only for the free t
 | `text-primary` | Dark charcoal (#1C1917) | Off-white (#F5F3F0) | Body text |
 | `text-secondary` | Gray (#78716C) | Muted lavender (#A8A3B8) | Secondary text, labels |
 
-Dark mode is the default. Support both modes from the start. In a future phase (post-MVP), the background will shift to match the selected mood.
+Dark mode is the default. Three theme modes are available: Dark, Light, and Mood. In Mood mode, the background shifts to a soft pastel gradient matching the selected mood, with automatic dark/light text for readability. Theme preference persists in localStorage.
 
 ### Visual Style
 
@@ -241,6 +245,12 @@ If the answer is anything — update the docs before moving on.
 
 8. **Free text AI path not yet verified** — Phase 4 code is complete but the OpenAI API call hasn't been tested end-to-end due to API quota limits. Needs a funded OpenAI account.
 
+9. **Audio playback uses Web Audio API** — No external audio library. Triangle wave oscillators with gain envelopes synthesize chords using the same `PIANO_CHORDS` note data from `chordData.ts`. Only one progression plays at a time — starting a new one auto-cancels the previous. `AudioContext` is created lazily on first user interaction to comply with browser autoplay policies.
+
+10. **Song matching uses Roman numeral analysis** — `songData.ts` converts chord progressions to Roman numeral patterns (e.g., C-G-Am-F in C = "I-V-vi-IV") and looks up matching famous songs. The analysis handles both major and minor keys correctly (different flat-interval sets). For longer progressions, it tries subsequence matching with 4-chord then 3-chord windows. The database has 25+ patterns covering 50+ songs.
+
+11. **3-mode theme toggle** — Cycles Dark → Light → Mood via a bottom-left button. Mood mode applies per-mood pastel gradient backgrounds with a `darkText` flag per mood to control whether the `dark` class is applied (light text on dark gradients, dark text on bright gradients). Theme is stored in localStorage under `emuse-theme`. The body gets `transition: background 0.6s ease` for smooth gradient changes.
+
 ## Gotchas & Lessons Learned
 
 1. **Tooltip clipping** — Cards with `overflow-hidden` clip tooltips that extend beyond card bounds. For cards on the main page, `overflow-visible` works. For tooltips inside scroll containers (like the favorites overlay), `overflow-visible` doesn't help because CSS forces both overflow axes to clip when one is non-visible. Solution: use `position: fixed` on the tooltip so it's positioned relative to the viewport, bypassing all parent overflow.
@@ -249,7 +259,7 @@ If the answer is anything — update the docs before moving on.
 
 3. **PowerShell heredoc** — Git commit with heredoc syntax (`$(cat <<'EOF'...)`) doesn't work in PowerShell. Use multiple `-m` flags instead.
 
-4. **Tailwind dark mode** — `index.html` has `class="dark"` on the `<html>` element. All dark-mode styles use Tailwind's `dark:` prefix. This is set from the start, not toggled yet.
+4. **Tailwind dark mode** — Dark mode styles use Tailwind's `dark:` prefix. The `dark` class on `<html>` is dynamically managed by the `useTheme` hook (no longer hardcoded). In Mood mode, the dark class is toggled per-mood based on whether the gradient needs light or dark text.
 
 5. **localStorage in tests** — jsdom's localStorage may not be fully functional (setItem throws). The test setup (`src/test/setup.ts`) includes a polyfill that provides an in-memory localStorage when the native one is broken.
 

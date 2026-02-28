@@ -126,3 +126,52 @@ npm test
 11. Tab through Progressions page → back button, filter pills, and progression cards are reachable
 12. Inspect HTML → pages use `<main>`, `<nav>`, `<section>`, `<article>` elements
 13. Favorites overlay has `role="dialog"` and `aria-label`
+
+### Theme Toggle (Cosmetic)
+
+**Cycling modes:**
+1. See the theme toggle button in the bottom-left corner (🌙 icon by default)
+2. Click it → switches to Light mode (☀️ icon), page background becomes warm off-white, text becomes dark
+3. Click again → switches to Mood mode (🎨 icon), background changes to a soft pastel gradient based on the selected mood
+4. Click again → returns to Dark mode (🌙 icon)
+
+**Mood-based backgrounds (in Mood mode):**
+5. Select "Happy" → soft amber/gold gradient with dark text
+6. Select "Sad" → deep navy gradient with light text
+7. Select "Calm" → pale mint/teal gradient with dark text
+8. Select "Energetic" → light blush/coral gradient with dark text
+9. Select "Melancholy" → muted deep plum gradient with light text
+10. Select "Romantic" → pastel pink/rose gradient with dark text
+11. Navigate back to Landing (no mood selected) → Mood mode shows default dark background
+
+**Persistence:**
+12. Set theme to Light → refresh the browser → still in Light mode
+13. Set theme to Mood → refresh → still in Mood mode
+
+**Smooth transition:**
+14. Switch modes → background color transitions smoothly (0.6s ease)
+
+### Phase 5.1: Audio Preview & Songs Like This
+
+**Audio Playback (Progressions Page):**
+1. Navigate to progressions → see a ▶ play button below the heart on each card
+2. Click ▶ → hear the chords play in sequence (triangle wave synth, ~0.75s per chord)
+3. While playing, the currently sounding chord name is highlighted with a purple background
+4. The ▶ changes to ⏹ while playing → click ⏹ to stop early
+5. Play a different progression while one is playing → first stops automatically
+6. Playback finishes → button reverts to ▶, highlight disappears
+
+**Audio Playback (Favorites Overlay):**
+7. Open favorites → see ▶ button next to the ♥ remove button on each card
+8. Click ▶ → same playback behavior as main page (chords play, active chord highlighted)
+
+**Songs Like This (Progressions Page):**
+9. Navigate to progressions → expand a card (e.g., C → G → Am → F in Happy)
+10. Below "Why it works", see "Songs like this" section with amber accent
+11. Each entry shows song title (bold) and artist
+12. Example: C → G → Am → F should show "Let It Be", "No Woman No Cry", etc.
+13. Not all progressions match — some cards won't show the "Songs like this" section
+
+**Songs Like This (Favorites Overlay):**
+14. Open favorites → expand a card → see "Songs like this" if pattern matches
+15. Same song data as the main progressions page

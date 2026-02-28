@@ -1,6 +1,12 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { FavoriteProgression } from "../hooks/useFavorites";
 import { ChordTooltip } from "./ChordTooltip";
+import {
+  playProgression,
+  stopPlayback,
+  type Instrument,
+} from "../services/audioEngine";
+import { findSimilarSongs } from "../data/songData";
 
 interface FavoritesOverlayProps {
   favorites: FavoriteProgression[];
@@ -41,6 +47,35 @@ function FavoriteCard({
   onRemove: () => void;
 }) {
   const [expanded, setExpanded] = useState(false);
+  const [playing, setPlaying] = useState(false);
+  const [activeChord, setActiveChord] = useState(-1);
+  const handleRef = useRef<{ cancel: () => void } | null>(null);
+
+  const togglePlay = useCallback(
+    (e: React.MouseEvent) => {
+      e.stopPropagation();
+      if (playing) {
+        stopPlayback();
+        return;
+      }
+      setPlaying(true);
+      setActiveChord(0);
+      handleRef.current = playProgression(
+        fav.chords,
+        fav.instrument as Instrument,
+        (idx) => setActiveChord(idx),
+        () => {
+          setPlaying(false);
+          setActiveChord(-1);
+          handleRef.current = null;
+        },
+      );
+    },
+    [playing, fav.chords, fav.instrument],
+  );
+
+  const similarSongs = findSimilarSongs(fav.chords, fav.key);
+
   const moodColor =
     MOOD_TAG_COLORS[fav.mood] ??
     "bg-gray-400/20 text-gray-600 dark:bg-gray-400/15 dark:text-gray-400";
@@ -78,16 +113,29 @@ function FavoriteCard({
               {COMPLEXITY_LABELS[fav.complexity]}
             </span>
           </div>
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              onRemove();
-            }}
-            aria-label="Remove from favorites"
-            className="shrink-0 cursor-pointer text-red-400 transition-colors hover:text-red-500"
-          >
-            ♥
-          </button>
+          <div className="flex shrink-0 items-center gap-1">
+            <button
+              onClick={togglePlay}
+              aria-label={playing ? "Stop playback" : "Play progression"}
+              className={`cursor-pointer text-sm transition-colors ${
+                playing
+                  ? "text-primary dark:text-primary-light"
+                  : "text-primary/60 hover:text-primary dark:text-primary-light/60 dark:hover:text-primary-light"
+              }`}
+            >
+              {playing ? "⏹" : "▶"}
+            </button>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onRemove();
+              }}
+              aria-label="Remove from favorites"
+              className="shrink-0 cursor-pointer text-red-400 transition-colors hover:text-red-500"
+            >
+              ♥
+            </button>
+          </div>
         </div>
 
         <div className="flex items-center justify-between">
@@ -95,7 +143,14 @@ function FavoriteCard({
             <div className="flex flex-wrap items-center gap-1 text-lg font-semibold">
               {fav.chords.map((chord, i) => (
                 <span key={i} className="inline-flex items-center gap-1">
-                  <span onClick={(e) => e.stopPropagation()}>
+                  <span
+                    onClick={(e) => e.stopPropagation()}
+                    className={`rounded px-0.5 transition-colors duration-150 ${
+                      playing && activeChord === i
+                        ? "bg-primary/20 dark:bg-primary-light/20"
+                        : ""
+                    }`}
+                  >
                     <ChordTooltip chord={chord} instrument={fav.instrument} />
                   </span>
                   {i < fav.chords.length - 1 && (
@@ -129,7 +184,7 @@ function FavoriteCard({
             </span>
           </div>
 
-          <div className="rounded-lg bg-secondary/5 px-4 py-3 dark:bg-secondary-light/5">
+          <div className="mb-3 rounded-lg bg-secondary/5 px-4 py-3 dark:bg-secondary-light/5">
             <span className="mb-1 block text-xs font-medium text-secondary dark:text-secondary-light">
               Why it works
             </span>
@@ -137,6 +192,28 @@ function FavoriteCard({
               {fav.theory}
             </p>
           </div>
+
+          {similarSongs.length > 0 && (
+            <div className="rounded-lg bg-amber-500/5 px-4 py-3 dark:bg-amber-400/5">
+              <span className="mb-1 block text-xs font-medium text-amber-700 dark:text-amber-400">
+                Songs like this
+              </span>
+              <ul className="space-y-0.5">
+                {similarSongs.map((song, i) => (
+                  <li
+                    key={i}
+                    className="text-sm text-text-light dark:text-text-dark"
+                  >
+                    <span className="font-medium">{song.title}</span>
+                    <span className="text-text-secondary-light dark:text-text-secondary-dark">
+                      {" "}
+                      — {song.artist}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
       )}
     </div>

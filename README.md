@@ -4,7 +4,7 @@ A web app where musicians get chord progressions based on their current mood.
 
 ## Current Status
 
-**Phases 0–5 Complete** — Full flow with AI, security, and polish!
+**Phases 0–5.1 Complete** — Full flow with AI, security, polish, audio, and song matching!
 
 **What works right now:**
 - Landing page with 6 mood tiles (Happy, Sad, Calm, Energetic, Melancholy, Romantic)
@@ -27,7 +27,12 @@ A web app where musicians get chord progressions based on their current mood.
 - Input sanitization (HTML tags stripped, special chars filtered)
 - Responsive layout (mobile-friendly: 2-col mood grid, stacked instrument buttons, full-width overlay)
 - Semantic HTML (main, nav, section, article) and keyboard navigation (Escape closes overlay, Tab navigates)
-- Dark mode UI
+- 3-mode theme toggle: Dark, Light, and Mood (pastel gradients shift per mood)
+- Theme preference persists across sessions (localStorage)
+- Audio preview: play button on each progression card plays chords in sequence using Web Audio API
+- Currently playing chord is highlighted during playback
+- "Songs like this" section in expanded cards shows famous songs using the same chord pattern
+- Audio and song matching also available in favorites overlay
 
 > **Note:** The free text AI path is implemented but not yet verified end-to-end due to OpenAI API quota limits. It requires a funded OpenAI account.
 

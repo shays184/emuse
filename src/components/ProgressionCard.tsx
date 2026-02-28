@@ -1,5 +1,11 @@
-import { useState } from "react";
+import { useState, useRef, useCallback } from "react";
 import { ChordTooltip } from "./ChordTooltip";
+import {
+  playProgression,
+  stopPlayback,
+  type Instrument,
+} from "../services/audioEngine";
+import { findSimilarSongs } from "../data/songData";
 
 interface Progression {
   chords: string[];
@@ -35,6 +41,34 @@ export function ProgressionCard({
   onToggleFavorite,
 }: ProgressionCardProps) {
   const [expanded, setExpanded] = useState(false);
+  const [playing, setPlaying] = useState(false);
+  const [activeChord, setActiveChord] = useState(-1);
+  const handleRef = useRef<{ cancel: () => void } | null>(null);
+
+  const togglePlay = useCallback(
+    (e: React.MouseEvent) => {
+      e.stopPropagation();
+      if (playing) {
+        stopPlayback();
+        return;
+      }
+      setPlaying(true);
+      setActiveChord(0);
+      handleRef.current = playProgression(
+        progression.chords,
+        instrument as Instrument,
+        (idx) => setActiveChord(idx),
+        () => {
+          setPlaying(false);
+          setActiveChord(-1);
+          handleRef.current = null;
+        },
+      );
+    },
+    [playing, progression.chords, instrument],
+  );
+
+  const similarSongs = findSimilarSongs(progression.chords, progression.key);
 
   return (
     <div className="overflow-visible rounded-xl bg-surface-light shadow-sm transition-shadow hover:shadow-md dark:bg-surface-dark">
@@ -50,28 +84,48 @@ export function ProgressionCard({
         }}
         className="flex w-full cursor-pointer items-center gap-4 p-4 text-left"
       >
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            onToggleFavorite();
-          }}
-          aria-label={
-            isFavorite ? "Remove from favorites" : "Save to favorites"
-          }
-          className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-colors ${
-            isFavorite
-              ? "bg-red-100 text-red-500 dark:bg-red-900/30 dark:text-red-400"
-              : "bg-primary/10 text-primary/40 hover:text-red-400 dark:bg-primary-light/10 dark:text-primary-light/40 dark:hover:text-red-400"
-          }`}
-        >
-          {isFavorite ? "♥" : "♡"}
-        </button>
+        <div className="flex shrink-0 flex-col items-center gap-1">
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onToggleFavorite();
+            }}
+            aria-label={
+              isFavorite ? "Remove from favorites" : "Save to favorites"
+            }
+            className={`flex h-8 w-8 items-center justify-center rounded-full transition-colors ${
+              isFavorite
+                ? "bg-red-100 text-red-500 dark:bg-red-900/30 dark:text-red-400"
+                : "bg-primary/10 text-primary/40 hover:text-red-400 dark:bg-primary-light/10 dark:text-primary-light/40 dark:hover:text-red-400"
+            }`}
+          >
+            {isFavorite ? "♥" : "♡"}
+          </button>
+          <button
+            onClick={togglePlay}
+            aria-label={playing ? "Stop playback" : "Play progression"}
+            className={`flex h-8 w-8 items-center justify-center rounded-full transition-colors ${
+              playing
+                ? "bg-primary/20 text-primary dark:bg-primary-light/20 dark:text-primary-light"
+                : "bg-primary/10 text-primary/60 hover:text-primary dark:bg-primary-light/10 dark:text-primary-light/60 dark:hover:text-primary-light"
+            }`}
+          >
+            {playing ? "⏹" : "▶"}
+          </button>
+        </div>
 
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-1 text-lg">
             {progression.chords.map((chord, i) => (
               <span key={i} className="inline-flex items-center gap-1">
-                <span onClick={(e) => e.stopPropagation()}>
+                <span
+                  onClick={(e) => e.stopPropagation()}
+                  className={`rounded px-0.5 transition-colors duration-150 ${
+                    playing && activeChord === i
+                      ? "bg-primary/20 dark:bg-primary-light/20"
+                      : ""
+                  }`}
+                >
                   <ChordTooltip chord={chord} instrument={instrument} />
                 </span>
                 {i < progression.chords.length - 1 && (
@@ -110,7 +164,7 @@ export function ProgressionCard({
             </span>
           </div>
 
-          <div className="rounded-lg bg-secondary/5 px-4 py-3 dark:bg-secondary-light/5">
+          <div className="mb-3 rounded-lg bg-secondary/5 px-4 py-3 dark:bg-secondary-light/5">
             <span className="mb-1 block text-xs font-medium text-secondary dark:text-secondary-light">
               Why it works
             </span>
@@ -118,6 +172,28 @@ export function ProgressionCard({
               {progression.theory}
             </p>
           </div>
+
+          {similarSongs.length > 0 && (
+            <div className="rounded-lg bg-amber-500/5 px-4 py-3 dark:bg-amber-400/5">
+              <span className="mb-1 block text-xs font-medium text-amber-700 dark:text-amber-400">
+                Songs like this
+              </span>
+              <ul className="space-y-0.5">
+                {similarSongs.map((song, i) => (
+                  <li
+                    key={i}
+                    className="text-sm text-text-light dark:text-text-dark"
+                  >
+                    <span className="font-medium">{song.title}</span>
+                    <span className="text-text-secondary-light dark:text-text-secondary-dark">
+                      {" "}
+                      — {song.artist}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
       )}
     </div>
