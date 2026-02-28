@@ -77,3 +77,29 @@ npm test
 **Cross-checks:**
 16. Verify favorites from Guitar mood show fretboard diagrams, Piano show keyboard diagrams
 17. Verify the floating ♥ button is visible on all screens (Landing, Instrument, Progressions)
+
+### Phase 4: Free Text AI Path
+
+> **Note:** Requires a funded OpenAI API key in `.env`. Not yet verified end-to-end due to quota limits.
+
+**Input & Submit:**
+1. See the free text input on Landing (no longer disabled/"Coming soon")
+2. Type a mood description (e.g., "nostalgic but hopeful, like driving home at sunset")
+3. Click the → button → see spinner while waiting for AI response
+4. Press Enter with text typed → same behavior as clicking →
+5. Try submitting with empty input → button is disabled
+
+**AI Results:**
+6. See progressions page with quoted mood as title, "AI-generated" subtitle
+7. Each card shows chords (e.g., Am → F → C → G) and key — no complexity filter, no theory
+8. Click ← Back → return to Landing
+
+**Error Handling:**
+9. Remove API key from `.env` → submit → see "OPENAI_API_KEY not set" error
+10. Use an invalid API key → see "Incorrect API key" error
+11. Exceed quota → see "Rate limit exceeded" or quota error
+
+**Cross-checks:**
+12. Static mood tile path still works unchanged (no API key needed)
+13. Free text path skips instrument selection entirely
+14. API key is not visible in browser dev tools Network tab

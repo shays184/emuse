@@ -38,13 +38,14 @@ Refer to `spec.md` for full requirements, architecture, and data shape.
 ☑ Fixed-position tooltips to avoid clipping inside overlay scroll container
 
 ### Phase 4: Free Text AI Path
-☐ Create `.env` with LLM API key (server-side only, add `.env` to `.gitignore`)
-☐ Create serverless function endpoint for free text mood input
-☐ Integrate LLM API (OpenAI) — send mood text, receive progressions
-☐ Wire the free text input on Landing screen to the serverless function — skips instrument selection, goes straight to Progressions
-☐ Display AI-generated progressions on the Progressions screen (minimal: no complexity sort, no theory annotations, no chord diagram hover)
-☐ Add loading state while waiting for LLM response
-☐ Add error handling (API failure, rate limit, empty response)
+☑ Create `.env` with LLM API key (server-side only, already in `.gitignore`)
+☑ Create serverless function endpoint (`api/generate-progressions.ts`) + Vite dev plugin for local API handling
+☑ Integrate LLM API (OpenAI gpt-4o-mini) — send mood text, receive 3-5 progressions
+☑ Wire the free text input on Landing screen — skips instrument selection, goes straight to Progressions
+☑ Display AI-generated progressions on the Progressions screen (minimal: just chords + key, no complexity sort, no theory, no chord hover)
+☑ Add loading state (spinner on submit button) while waiting for LLM response
+☑ Add error handling (API failure, rate limit, empty response, invalid JSON)
+⚠ Not yet verified end-to-end (OpenAI API quota limit — needs funded account)
 
 ### Phase 5: Security & Polish
 ☐ Add rate limiting to the free text endpoint
@@ -161,38 +162,32 @@ Refer to `spec.md` for full requirements, architecture, and data shape.
 ## Phase 4: Free Text AI Path
 
 **Affected Files:**
-- `.env` (new) — LLM API key (server-side only)
-- `.gitignore` — verify `.env` is listed (should already exist from Phase 0)
-- `api/generate-progressions.ts` (new) — serverless function for LLM calls
-- `src/pages/LandingPage.tsx` — wire free text input to serverless function (skips instrument selection)
-- `src/pages/ProgressionsPage.tsx` — handle AI-generated progressions (no complexity sort, no theory, no chord hover)
-- `src/services/api.ts` (new) — client-side API call to serverless function
+- `.env` (new) — LLM API key (server-side only, NEVER commit)
+- `.env.example` (new) — template for `.env`
+- `api/generate-progressions.ts` (new) — Vercel serverless function (OpenAI gpt-4o-mini, input validation, JSON parsing, error handling)
+- `src/services/api.ts` (new) — client-side `generateProgressions()` fetch wrapper
+- `src/hooks/useNavigation.ts` — added `isFreeText`, `aiProgressions` state, `goToFreeTextResults()` method
+- `src/pages/LandingPage.tsx` — enabled free text input with submit button, spinner, error display, Enter key support
+- `src/pages/ProgressionsPage.tsx` — dual mode: static (existing) vs free text (minimal cards with chords + key only)
+- `src/App.tsx` — wires `onFreeTextResults` to LandingPage, passes free text state to ProgressionsPage
+- `vite.config.ts` — added `apiDevPlugin()` that handles `/api/generate-progressions` during dev (no Vercel CLI needed)
+- `package.json` — added `openai` dependency, `dotenv` dev dependency
 
-**Local dev:** Use Vercel CLI (`vercel dev`) to run the serverless function locally alongside the Vite dev server. Install `vercel` as a dev dependency.
+**Local dev:** `npm run dev` handles both frontend and API via a Vite dev plugin. No Vercel CLI needed. Requires `.env` with `OPENAI_API_KEY`.
 
 **Goal:** The free text mood path works. User types a mood description, the app calls the LLM, and returns matching progressions.
 
-**LLM Integration Details:**
-- Prompt: Send the user's free text mood description. Request 3-5 chord progressions matching that mood, each with chords and key. No complexity sorting or theory required.
-- Expected response shape from LLM (parse and validate before displaying):
-  ```json
-  {
-    "progressions": [
-      { "chords": ["Am", "F", "C", "G"], "key": "Am" }
-    ]
-  }
-  ```
-- If the LLM response doesn't match the expected shape, show an error to the user.
+**Status:** Implemented but not verified end-to-end due to OpenAI API quota limits. Needs a funded OpenAI account to test.
 
-**Done means:** Type "nostalgic but hopeful, like driving home at sunset" → skip instrument selection → see chord progressions returned by the LLM. Loading state appears while waiting. Error state appears if the API fails.
-
-**Test it:**
-1. Type a mood description in the free text input → click submit
-2. See a loading indicator
-3. See progressions appear (no complexity sorting, no theory annotations — just chords with basic context)
+**Test it (when API key is funded):**
+1. Type a mood description in the free text input → click → or press Enter
+2. See a spinner on the submit button
+3. See progressions appear (just chords + key, no complexity filter or theory)
 4. Try with different mood descriptions → get different results
-5. Disconnect network / simulate API failure → see an error message
-6. Verify the LLM API key is not visible in browser dev tools (network tab)
+5. Click ← Back → return to Landing
+6. Try with empty input → submit button is disabled
+7. Disconnect network / simulate API failure → see an error message below the input
+8. Verify the LLM API key is not visible in browser dev tools (network tab)
 
 ---
 

@@ -1,4 +1,7 @@
+import { useState } from "react";
 import { MoodTile } from "../components/MoodTile";
+import { generateProgressions } from "../services/api";
+import type { AIProgression } from "../services/api";
 
 const MOODS = [
   { name: "Happy", emoji: "😊" },
@@ -11,12 +14,43 @@ const MOODS = [
 
 interface LandingPageProps {
   onMoodSelect: (mood: string) => void;
+  onFreeTextResults: (mood: string, progressions: AIProgression[]) => void;
 }
 
-export function LandingPage({ onMoodSelect }: LandingPageProps) {
+export function LandingPage({
+  onMoodSelect,
+  onFreeTextResults,
+}: LandingPageProps) {
+  const [freeText, setFreeText] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
   const handleSurpriseMe = () => {
     const randomMood = MOODS[Math.floor(Math.random() * MOODS.length)]!;
     onMoodSelect(randomMood.name);
+  };
+
+  const handleFreeTextSubmit = async () => {
+    const text = freeText.trim();
+    if (!text) return;
+
+    setLoading(true);
+    setError(null);
+
+    try {
+      const result = await generateProgressions(text);
+      onFreeTextResults(text, result.progressions);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Something went wrong");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" && !loading && freeText.trim()) {
+      handleFreeTextSubmit();
+    }
   };
 
   return (
@@ -40,17 +74,35 @@ export function LandingPage({ onMoodSelect }: LandingPageProps) {
       </div>
 
       <div className="mb-6 w-full max-w-lg">
-        <div className="relative">
+        <div className="relative flex gap-2">
           <input
             type="text"
+            value={freeText}
+            onChange={(e) => {
+              setFreeText(e.target.value);
+              if (error) setError(null);
+            }}
+            onKeyDown={handleKeyDown}
             placeholder="Describe your mood in your own words..."
-            disabled
-            className="w-full rounded-xl border border-gray-300 bg-surface-light px-4 py-3 text-text-light opacity-50 dark:border-gray-600 dark:bg-surface-dark dark:text-text-dark"
+            disabled={loading}
+            maxLength={500}
+            className="w-full rounded-xl border border-gray-300 bg-surface-light px-4 py-3 text-text-light transition-colors focus:border-primary focus:outline-none dark:border-gray-600 dark:bg-surface-dark dark:text-text-dark dark:focus:border-primary-light"
           />
-          <span className="absolute right-3 top-1/2 -translate-y-1/2 rounded-md bg-gray-200 px-2 py-0.5 text-xs text-gray-500 dark:bg-gray-700 dark:text-gray-400">
-            Coming soon
-          </span>
+          <button
+            onClick={handleFreeTextSubmit}
+            disabled={loading || !freeText.trim()}
+            className="shrink-0 cursor-pointer rounded-xl bg-primary px-5 py-3 font-semibold text-white shadow-md transition-all hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-primary-light dark:text-bg-dark"
+          >
+            {loading ? (
+              <span className="inline-block h-5 w-5 animate-spin rounded-full border-2 border-white/30 border-t-white" />
+            ) : (
+              "→"
+            )}
+          </button>
         </div>
+        {error && (
+          <p className="mt-2 text-sm text-red-500 dark:text-red-400">{error}</p>
+        )}
       </div>
 
       <button

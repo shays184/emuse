@@ -30,8 +30,7 @@ const MOOD_TAG_COLORS: Record<string, string> = {
 const INSTRUMENT_TAG_COLORS: Record<string, string> = {
   guitar:
     "bg-orange-400/20 text-orange-700 dark:bg-orange-400/15 dark:text-orange-400",
-  piano:
-    "bg-sky-400/20 text-sky-700 dark:bg-sky-400/15 dark:text-sky-400",
+  piano: "bg-sky-400/20 text-sky-700 dark:bg-sky-400/15 dark:text-sky-400",
 };
 
 function FavoriteCard({
@@ -73,8 +72,7 @@ function FavoriteCard({
             <span
               className={`rounded-full px-2 py-0.5 font-medium ${instrumentColor}`}
             >
-              {fav.instrument.charAt(0).toUpperCase() +
-                fav.instrument.slice(1)}
+              {fav.instrument.charAt(0).toUpperCase() + fav.instrument.slice(1)}
             </span>
             <span className="text-text-secondary-light dark:text-text-secondary-dark">
               {COMPLEXITY_LABELS[fav.complexity]}

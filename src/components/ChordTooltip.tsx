@@ -78,8 +78,7 @@ export function ChordTooltip({ chord, instrument }: ChordTooltipProps) {
             left: pos.left,
             zIndex: 200,
             transform:
-              pos.top >
-              (anchorRef.current?.getBoundingClientRect().bottom ?? 0)
+              pos.top > (anchorRef.current?.getBoundingClientRect().bottom ?? 0)
                 ? "translateY(0)"
                 : "translateY(-100%)",
           }}

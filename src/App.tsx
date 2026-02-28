@@ -27,15 +27,22 @@ function App() {
       page = (
         <ProgressionsPage
           mood={nav.selectedMood!}
-          instrument={nav.selectedInstrument!}
+          instrument={nav.selectedInstrument}
           onBack={nav.goBack}
           isFavorite={isFavorite}
           onToggleFavorite={toggleFavorite}
+          isFreeText={nav.isFreeText}
+          aiProgressions={nav.aiProgressions}
         />
       );
       break;
     default:
-      page = <LandingPage onMoodSelect={nav.goToInstrument} />;
+      page = (
+        <LandingPage
+          onMoodSelect={nav.goToInstrument}
+          onFreeTextResults={nav.goToFreeTextResults}
+        />
+      );
   }
 
   return (

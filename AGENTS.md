@@ -63,7 +63,7 @@ emuse/
 │   │   ├── useNavigation.ts       # State-based navigation (no React Router)
 │   │   └── useFavorites.ts        # localStorage persistence (add/remove/toggle/isFavorite)
 │   ├── services/
-│   │   └── api.ts                 # (future) Client-side API calls
+│   │   └── api.ts                 # Client-side API call (generateProgressions)
 ```
 
 ## Technology Stack
@@ -237,6 +237,10 @@ If the answer is anything — update the docs before moving on.
 
 6. **Fixed-position tooltips** — `ChordTooltip` uses `position: fixed` with viewport-relative coordinates instead of `position: absolute`. This prevents clipping by any parent `overflow` container (critical for the favorites overlay scroll area).
 
+7. **Vite dev plugin instead of Vercel CLI** — The plan originally called for `vercel dev` to run the serverless function locally. We added a Vite plugin (`apiDevPlugin` in `vite.config.ts`) that intercepts `/api/generate-progressions` during dev, so `npm run dev` handles everything. No Vercel CLI login required. The `api/generate-progressions.ts` file is still Vercel-compatible for production deployment.
+
+8. **Free text AI path not yet verified** — Phase 4 code is complete but the OpenAI API call hasn't been tested end-to-end due to API quota limits. Needs a funded OpenAI account.
+
 ## Gotchas & Lessons Learned
 
 1. **Tooltip clipping** — Cards with `overflow-hidden` clip tooltips that extend beyond card bounds. For cards on the main page, `overflow-visible` works. For tooltips inside scroll containers (like the favorites overlay), `overflow-visible` doesn't help because CSS forces both overflow axes to clip when one is non-visible. Solution: use `position: fixed` on the tooltip so it's positioned relative to the viewport, bypassing all parent overflow.
@@ -250,3 +254,5 @@ If the answer is anything — update the docs before moving on.
 5. **localStorage in tests** — jsdom's localStorage may not be fully functional (setItem throws). The test setup (`src/test/setup.ts`) includes a polyfill that provides an in-memory localStorage when the native one is broken.
 
 6. **Favorite ID generation** — Favorites are identified by `mood|instrument|chords|key`. This means the same progression saved under different instruments counts as two separate favorites (intentional — different diagrams).
+
+7. **dotenv in Vite plugin** — The `apiDevPlugin` calls `config()` from `dotenv` to load `.env` into `process.env`. The `.env` is only read at server startup — changes require restarting `npm run dev`.
