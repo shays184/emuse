@@ -1,16 +1,23 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigation } from "./hooks/useNavigation";
 import { useFavorites } from "./hooks/useFavorites";
+import { useTheme } from "./hooks/useTheme";
 import { LandingPage } from "./pages/LandingPage";
 import { InstrumentPage } from "./pages/InstrumentPage";
 import { ProgressionsPage } from "./pages/ProgressionsPage";
 import { FavoritesOverlay } from "./components/FavoritesOverlay";
+import { ThemeToggle } from "./components/ThemeToggle";
 
 function App() {
   const nav = useNavigation();
   const { favorites, isFavorite, toggleFavorite, removeFavorite } =
     useFavorites();
+  const { mode, cycleTheme, setActiveMood } = useTheme();
   const [showFavorites, setShowFavorites] = useState(false);
+
+  useEffect(() => {
+    setActiveMood(nav.selectedMood);
+  }, [nav.selectedMood, setActiveMood]);
 
   let page;
   switch (nav.screen) {
@@ -61,6 +68,8 @@ function App() {
           </span>
         )}
       </button>
+
+      <ThemeToggle mode={mode} onToggle={cycleTheme} />
 
       {showFavorites && (
         <FavoritesOverlay
