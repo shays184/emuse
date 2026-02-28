@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { FavoriteProgression } from "../hooks/useFavorites";
 import { ChordTooltip } from "./ChordTooltip";
 
@@ -148,14 +148,31 @@ export function FavoritesOverlay({
   onRemove,
   onClose,
 }: FavoritesOverlayProps) {
+  const panelRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    document.addEventListener("keydown", handleKey);
+    panelRef.current?.focus();
+    return () => document.removeEventListener("keydown", handleKey);
+  }, [onClose]);
+
   return (
-    <div className="fixed inset-0 z-50 flex justify-end">
+    <div
+      ref={panelRef}
+      tabIndex={-1}
+      role="dialog"
+      aria-label="Favorites"
+      className="fixed inset-0 z-50 flex justify-end outline-none"
+    >
       <div
         className="absolute inset-0 bg-black/50 backdrop-blur-sm"
         onClick={onClose}
       />
 
-      <div className="relative flex h-full w-full max-w-md flex-col bg-bg-light dark:bg-bg-dark">
+      <div className="relative flex h-full w-full flex-col bg-bg-light sm:max-w-md dark:bg-bg-dark">
         <div className="flex items-center justify-between border-b border-gray-200 px-6 py-4 dark:border-gray-700">
           <h2 className="text-xl font-bold text-text-light dark:text-text-dark">
             Favorites

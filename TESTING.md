@@ -103,3 +103,26 @@ npm test
 12. Static mood tile path still works unchanged (no API key needed)
 13. Free text path skips instrument selection entirely
 14. API key is not visible in browser dev tools Network tab
+
+### Phase 5: Security & Polish
+
+**Rate Limiting:**
+1. Submit free text rapidly 11+ times within a minute → see "Too many requests" error on the 11th
+2. Wait a minute → requests work again
+
+**Input Sanitization:**
+3. Submit text with HTML tags (e.g., `<script>alert('x')</script>happy`) → tags are stripped, mood still works
+4. Submit text with special characters → filtered safely
+
+**Responsive Layout:**
+5. Resize browser to phone width (~375px) → Landing page shows 2-column mood grid
+6. Instrument page → buttons stack vertically
+7. Progressions page → cards render without horizontal overflow
+8. Open favorites overlay → takes full screen width on mobile
+
+**Accessibility:**
+9. Press Escape while favorites overlay is open → overlay closes
+10. Tab through Landing page → all mood tiles, text input, submit button, and Surprise me are reachable
+11. Tab through Progressions page → back button, filter pills, and progression cards are reachable
+12. Inspect HTML → pages use `<main>`, `<nav>`, `<section>`, `<article>` elements
+13. Favorites overlay has `role="dialog"` and `aria-label`

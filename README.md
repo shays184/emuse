@@ -4,7 +4,7 @@ A web app where musicians get chord progressions based on their current mood.
 
 ## Current Status
 
-**Phases 0–4 Complete** — Full flow with AI-powered free text mood input!
+**Phases 0–5 Complete** — Full flow with AI, security, and polish!
 
 **What works right now:**
 - Landing page with 6 mood tiles (Happy, Sad, Calm, Energetic, Melancholy, Romantic)
@@ -23,13 +23,15 @@ A web app where musicians get chord progressions based on their current mood.
 - Mood-colored and instrument-colored tags in favorites
 - Free text mood input with AI-generated progressions (requires OpenAI API key)
 - Loading spinner and error handling for AI requests
+- Rate limiting on AI endpoint (10 requests/minute per IP)
+- Input sanitization (HTML tags stripped, special chars filtered)
+- Responsive layout (mobile-friendly: 2-col mood grid, stacked instrument buttons, full-width overlay)
+- Semantic HTML (main, nav, section, article) and keyboard navigation (Escape closes overlay, Tab navigates)
 - Dark mode UI
 
 > **Note:** The free text AI path is implemented but not yet verified end-to-end due to OpenAI API quota limits. It requires a funded OpenAI account.
 
 **Try it:** `npm run dev` → Open http://localhost:5173 → Pick a mood tile OR type a free-form mood description
-
-**Next:** Phase 5 — Security & Polish (rate limiting, responsive layout, accessibility)
 
 ## Setup
 

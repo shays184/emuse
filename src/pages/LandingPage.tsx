@@ -54,15 +54,15 @@ export function LandingPage({
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center px-4 pt-16">
-      <h1 className="mb-2 text-5xl font-bold text-primary dark:text-primary-light">
+    <main className="flex min-h-screen flex-col items-center px-4 pt-16">
+      <h1 className="mb-2 text-4xl font-bold text-primary sm:text-5xl dark:text-primary-light">
         eMuse
       </h1>
       <p className="mb-12 text-lg text-text-secondary-light dark:text-text-secondary-dark">
         Pick your mood. Get your chords. Start playing.
       </p>
 
-      <div className="mb-10 grid w-full max-w-lg grid-cols-3 gap-4">
+      <div className="mb-10 grid w-full max-w-lg grid-cols-2 gap-4 sm:grid-cols-3">
         {MOODS.map((mood) => (
           <MoodTile
             key={mood.name}
@@ -111,6 +111,6 @@ export function LandingPage({
       >
         🎲 Surprise me
       </button>
-    </div>
+    </main>
   );
 }

@@ -48,10 +48,10 @@ Refer to `spec.md` for full requirements, architecture, and data shape.
 ⚠ Not yet verified end-to-end (OpenAI API quota limit — needs funded account)
 
 ### Phase 5: Security & Polish
-☐ Add rate limiting to the free text endpoint
-☐ Sanitize free text input before passing to LLM
-☐ Responsive layout pass — verify nothing breaks on small screens
-☐ Basic accessibility pass (keyboard navigation, semantic HTML)
+☑ Add rate limiting to the free text endpoint (10 req/min per IP, in-memory, both serverless + Vite plugin)
+☑ Sanitize free text input before passing to LLM (strip HTML tags, filter special chars, cap at 500 chars)
+☑ Responsive layout pass — 2-col mood grid on mobile, stacked instrument buttons, full-width favorites overlay
+☑ Basic accessibility pass — semantic HTML (main/nav/section/article), Escape closes overlay, focus management, aria-labels
 
 ---
 

@@ -18,6 +18,27 @@ Rules:
 - Vary the progressions (different keys, lengths, complexity)
 - Do NOT include any text outside the JSON`;
 
+const RATE_LIMIT_WINDOW_MS = 60_000;
+const RATE_LIMIT_MAX = 10;
+const requestLog = new Map<string, number[]>();
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const timestamps = requestLog.get(ip) ?? [];
+  const recent = timestamps.filter((t) => now - t < RATE_LIMIT_WINDOW_MS);
+  recent.push(now);
+  requestLog.set(ip, recent);
+  return recent.length > RATE_LIMIT_MAX;
+}
+
+function sanitizeInput(raw: string): string {
+  return raw
+    .replace(/<[^>]*>/g, "")
+    .replace(/[^\p{L}\p{N}\p{P}\p{Z}\p{Emoji}]/gu, "")
+    .trim()
+    .slice(0, 500);
+}
+
 export default async function handler(
   req: VercelRequest,
   res: VercelResponse,
@@ -26,14 +47,26 @@ export default async function handler(
     return res.status(405).json({ error: "Method not allowed" });
   }
 
+  const ip =
+    (req.headers["x-forwarded-for"] as string)?.split(",")[0]?.trim() ??
+    req.socket?.remoteAddress ??
+    "unknown";
+
+  if (isRateLimited(ip)) {
+    return res
+      .status(429)
+      .json({ error: "Too many requests. Please wait a minute and try again." });
+  }
+
   const { mood } = req.body ?? {};
 
   if (!mood || typeof mood !== "string" || mood.trim().length === 0) {
     return res.status(400).json({ error: "Mood text is required" });
   }
 
-  if (mood.length > 500) {
-    return res.status(400).json({ error: "Mood text is too long (max 500 characters)" });
+  const sanitized = sanitizeInput(mood);
+  if (sanitized.length === 0) {
+    return res.status(400).json({ error: "Mood text is required" });
   }
 
   const apiKey = process.env.OPENAI_API_KEY;
@@ -48,7 +81,7 @@ export default async function handler(
       model: "gpt-4o-mini",
       messages: [
         { role: "system", content: SYSTEM_PROMPT },
-        { role: "user", content: mood.trim() },
+        { role: "user", content: sanitized },
       ],
       temperature: 0.8,
       max_tokens: 1000,
@@ -83,11 +116,12 @@ export default async function handler(
       return res.status(502).json({ error: "AI returned invalid JSON" });
     }
 
-    const message =
-      err instanceof Error ? err.message : "Unknown error";
+    const message = err instanceof Error ? err.message : "Unknown error";
 
     if (message.includes("rate limit") || message.includes("429")) {
-      return res.status(429).json({ error: "Rate limit exceeded. Try again shortly." });
+      return res
+        .status(429)
+        .json({ error: "Rate limit exceeded. Try again shortly." });
     }
 
     return res.status(500).json({ error: "Failed to generate progressions" });

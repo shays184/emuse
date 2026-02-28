@@ -55,13 +55,15 @@ export function ProgressionsPage({
 
   if (isFreeText && aiProgressions) {
     return (
-      <div className="mx-auto min-h-screen max-w-2xl px-4 pt-8 pb-16">
-        <button
-          onClick={onBack}
-          className="mb-6 cursor-pointer rounded-lg px-3 py-1.5 text-sm font-medium text-text-secondary-light transition-colors hover:text-text-light dark:text-text-secondary-dark dark:hover:text-text-dark"
-        >
-          ← Back
-        </button>
+      <main className="mx-auto min-h-screen max-w-2xl px-4 pt-8 pb-16">
+        <nav>
+          <button
+            onClick={onBack}
+            className="mb-6 cursor-pointer rounded-lg px-3 py-1.5 text-sm font-medium text-text-secondary-light transition-colors hover:text-text-light dark:text-text-secondary-dark dark:hover:text-text-dark"
+          >
+            ← Back
+          </button>
+        </nav>
 
         <div className="mb-6">
           <h2 className="mb-1 text-3xl font-bold text-text-light dark:text-text-dark">
@@ -72,9 +74,12 @@ export function ProgressionsPage({
           </p>
         </div>
 
-        <div className="flex flex-col gap-3">
+        <section
+          aria-label="AI-generated progressions"
+          className="flex flex-col gap-3"
+        >
           {aiProgressions.map((p, i) => (
-            <div
+            <article
               key={`${p.key}-${p.chords.join("-")}-${i}`}
               className="rounded-xl bg-surface-light p-4 shadow-sm dark:bg-surface-dark"
             >
@@ -84,10 +89,10 @@ export function ProgressionsPage({
               <p className="mt-1 text-sm text-text-secondary-light dark:text-text-secondary-dark">
                 Key of {p.key}
               </p>
-            </div>
+            </article>
           ))}
-        </div>
-      </div>
+        </section>
+      </main>
     );
   }
 
@@ -103,13 +108,15 @@ export function ProgressionsPage({
   const sorted = [...filtered].sort((a, b) => a.complexity - b.complexity);
 
   return (
-    <div className="mx-auto min-h-screen max-w-2xl px-4 pt-8 pb-16">
-      <button
-        onClick={onBack}
-        className="mb-6 cursor-pointer rounded-lg px-3 py-1.5 text-sm font-medium text-text-secondary-light transition-colors hover:text-text-light dark:text-text-secondary-dark dark:hover:text-text-dark"
-      >
-        ← Back
-      </button>
+    <main className="mx-auto min-h-screen max-w-2xl px-4 pt-8 pb-16">
+      <nav>
+        <button
+          onClick={onBack}
+          className="mb-6 cursor-pointer rounded-lg px-3 py-1.5 text-sm font-medium text-text-secondary-light transition-colors hover:text-text-light dark:text-text-secondary-dark dark:hover:text-text-dark"
+        >
+          ← Back
+        </button>
+      </nav>
 
       <div className="mb-6">
         <h2 className="mb-1 text-3xl font-bold text-text-light dark:text-text-dark">
@@ -130,7 +137,7 @@ export function ProgressionsPage({
         />
       </div>
 
-      <div className="flex flex-col gap-3">
+      <section aria-label="Chord progressions" className="flex flex-col gap-3">
         {sorted.map((progression) => (
           <ProgressionCard
             key={`${progression.key}-${progression.chords.join("-")}`}
@@ -147,7 +154,7 @@ export function ProgressionsPage({
             }
           />
         ))}
-      </div>
-    </div>
+      </section>
+    </main>
   );
 }

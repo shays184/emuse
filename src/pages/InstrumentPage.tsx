@@ -17,7 +17,7 @@ export function InstrumentPage({
   onBack,
 }: InstrumentPageProps) {
   return (
-    <div className="flex min-h-screen flex-col items-center px-4 pt-16">
+    <main className="flex min-h-screen flex-col items-center px-4 pt-16">
       <button
         onClick={onBack}
         className="mb-8 cursor-pointer self-start rounded-lg px-3 py-1.5 text-sm font-medium text-text-secondary-light transition-colors hover:text-text-light dark:text-text-secondary-dark dark:hover:text-text-dark"
@@ -32,7 +32,7 @@ export function InstrumentPage({
         Choose your instrument
       </p>
 
-      <div className="flex gap-6">
+      <div className="flex flex-col gap-4 sm:flex-row sm:gap-6">
         {INSTRUMENTS.map((inst) => (
           <button
             key={inst.id}
@@ -46,6 +46,6 @@ export function InstrumentPage({
           </button>
         ))}
       </div>
-    </div>
+    </main>
   );
 }
