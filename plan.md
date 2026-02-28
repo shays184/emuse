@@ -61,6 +61,12 @@ Refer to `spec.md` for full requirements, architecture, and data shape.
 ☑ Minor key support — correct Roman numeral analysis for both major and minor keys
 ☑ Features available in both ProgressionCard and FavoritesOverlay
 
+### Phase 5.2: Favorites Filters
+☑ Filter favorites by mood, instrument, and level via compact dropdown selects
+☑ Filters combine (AND logic) — e.g., "Happy" + "Guitar" + "Beginner"
+☑ Empty state when no favorites match active filters
+☑ Filter bar hidden when no favorites exist
+
 ### Cosmetic: Theme Toggle
 ☑ 3-mode theme toggle (Dark / Light / Mood) — button in bottom-left corner, cycles through modes
 ☑ Light mode — warm off-white background, dark text

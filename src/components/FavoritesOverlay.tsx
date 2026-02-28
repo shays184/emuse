@@ -220,12 +220,20 @@ function FavoriteCard({
   );
 }
 
+const MOODS = ["Happy", "Sad", "Calm", "Energetic", "Melancholy", "Romantic"];
+
+const selectClass =
+  "cursor-pointer rounded-lg border border-gray-200 bg-surface-light px-2 py-1 text-xs text-text-light outline-none dark:border-gray-700 dark:bg-surface-dark dark:text-text-dark";
+
 export function FavoritesOverlay({
   favorites,
   onRemove,
   onClose,
 }: FavoritesOverlayProps) {
   const panelRef = useRef<HTMLDivElement>(null);
+  const [moodFilter, setMoodFilter] = useState<string | null>(null);
+  const [instrumentFilter, setInstrumentFilter] = useState<string | null>(null);
+  const [levelFilter, setLevelFilter] = useState<number | null>(null);
 
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
@@ -235,6 +243,13 @@ export function FavoritesOverlay({
     panelRef.current?.focus();
     return () => document.removeEventListener("keydown", handleKey);
   }, [onClose]);
+
+  const filtered = favorites.filter((fav) => {
+    if (moodFilter && fav.mood !== moodFilter) return false;
+    if (instrumentFilter && fav.instrument !== instrumentFilter) return false;
+    if (levelFilter && fav.complexity !== levelFilter) return false;
+    return true;
+  });
 
   return (
     <div
@@ -263,6 +278,47 @@ export function FavoritesOverlay({
           </button>
         </div>
 
+        {favorites.length > 0 && (
+          <div className="flex items-center gap-2 border-b border-gray-200 px-6 py-3 dark:border-gray-700">
+            <select
+              value={moodFilter ?? ""}
+              onChange={(e) => setMoodFilter(e.target.value || null)}
+              className={selectClass}
+              aria-label="Filter by mood"
+            >
+              <option value="">All moods</option>
+              {MOODS.map((m) => (
+                <option key={m} value={m}>
+                  {m}
+                </option>
+              ))}
+            </select>
+            <select
+              value={instrumentFilter ?? ""}
+              onChange={(e) => setInstrumentFilter(e.target.value || null)}
+              className={selectClass}
+              aria-label="Filter by instrument"
+            >
+              <option value="">All</option>
+              <option value="guitar">Guitar</option>
+              <option value="piano">Piano</option>
+            </select>
+            <select
+              value={levelFilter ?? ""}
+              onChange={(e) =>
+                setLevelFilter(e.target.value ? Number(e.target.value) : null)
+              }
+              className={selectClass}
+              aria-label="Filter by level"
+            >
+              <option value="">All levels</option>
+              <option value="1">Beginner</option>
+              <option value="2">Intermediate</option>
+              <option value="3">Advanced</option>
+            </select>
+          </div>
+        )}
+
         <div className="flex-1 overflow-y-auto px-6 py-4">
           {favorites.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-20 text-center">
@@ -274,9 +330,15 @@ export function FavoritesOverlay({
                 Tap the heart on any progression to save it here
               </p>
             </div>
+          ) : filtered.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-20 text-center">
+              <p className="text-sm text-text-secondary-light dark:text-text-secondary-dark">
+                No favorites match the current filters
+              </p>
+            </div>
           ) : (
             <div className="flex flex-col gap-3">
-              {favorites.map((fav) => (
+              {filtered.map((fav) => (
                 <FavoriteCard
                   key={fav.id}
                   fav={fav}

@@ -33,6 +33,7 @@ A web app where musicians get chord progressions based on their current mood.
 - Currently playing chord is highlighted during playback
 - "Songs like this" section in expanded cards shows famous songs using the same chord pattern
 - Audio and song matching also available in favorites overlay
+- Favorites filter: dropdown selects for mood, instrument, and level
 
 > **Note:** The free text AI path is implemented but not yet verified end-to-end due to OpenAI API quota limits. It requires a funded OpenAI account.
 

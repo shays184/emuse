@@ -59,7 +59,7 @@ emuse/
 │   │   ├── ChordTooltip.tsx       # Hover wrapper — shows diagram tooltip, voicing nav
 │   │   ├── GuitarDiagram.tsx      # SVG fretboard renderer (dots, barres, open/muted)
 │   │   ├── PianoDiagram.tsx       # SVG piano keyboard renderer (highlighted keys + note names)
-│   │   ├── FavoritesOverlay.tsx   # Slide-in panel with expandable favorite cards + tooltips
+│   │   ├── FavoritesOverlay.tsx   # Slide-in panel with filters, expandable cards + tooltips
 │   │   └── ThemeToggle.tsx        # Theme mode toggle button (Dark/Light/Mood)
 │   ├── hooks/
 │   │   ├── useNavigation.ts       # State-based navigation (no React Router)

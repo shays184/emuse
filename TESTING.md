@@ -175,3 +175,15 @@ npm test
 **Songs Like This (Favorites Overlay):**
 14. Open favorites → expand a card → see "Songs like this" if pattern matches
 15. Same song data as the main progressions page
+
+### Phase 5.2: Favorites Filters
+
+1. Open favorites with several saved progressions → see 3 dropdown selects at the top (mood, instrument, level)
+2. All dropdowns default to "All" (no filter)
+3. Select "Happy" from mood dropdown → only Happy favorites shown
+4. Select "Guitar" from instrument dropdown → narrows further to Happy + Guitar
+5. Select "Beginner" from level dropdown → narrows further to Happy + Guitar + Beginner
+6. Change mood back to "All moods" → shows all Guitar + Beginner favorites
+7. If no favorites match the active filters → see "No favorites match the current filters" message
+8. Dropdowns are hidden when there are no favorites at all
+9. Filters do not persist across overlay open/close (reset each time)
