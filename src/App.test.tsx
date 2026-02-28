@@ -10,7 +10,14 @@ describe("App", () => {
 
   it("renders all six mood tiles", () => {
     render(<App />);
-    const moods = ["Happy", "Sad", "Calm", "Energetic", "Melancholy", "Romantic"];
+    const moods = [
+      "Happy",
+      "Sad",
+      "Calm",
+      "Energetic",
+      "Melancholy",
+      "Romantic",
+    ];
     moods.forEach((mood) => {
       expect(screen.getByText(mood)).toBeInTheDocument();
     });

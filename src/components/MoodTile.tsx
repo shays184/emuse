@@ -5,16 +5,13 @@ interface MoodTileProps {
 }
 
 const MOOD_COLORS: Record<string, string> = {
-  Happy:
-    "from-amber-400 to-yellow-300 dark:from-amber-500 dark:to-yellow-400",
+  Happy: "from-amber-400 to-yellow-300 dark:from-amber-500 dark:to-yellow-400",
   Sad: "from-blue-500 to-indigo-400 dark:from-blue-600 dark:to-indigo-500",
   Calm: "from-teal-400 to-cyan-300 dark:from-teal-500 dark:to-cyan-400",
-  Energetic:
-    "from-red-500 to-orange-400 dark:from-red-600 dark:to-orange-500",
+  Energetic: "from-red-500 to-orange-400 dark:from-red-600 dark:to-orange-500",
   Melancholy:
     "from-purple-500 to-violet-400 dark:from-purple-600 dark:to-violet-500",
-  Romantic:
-    "from-pink-500 to-rose-400 dark:from-pink-600 dark:to-rose-500",
+  Romantic: "from-pink-500 to-rose-400 dark:from-pink-600 dark:to-rose-500",
 };
 
 export function MoodTile({ mood, emoji, onClick }: MoodTileProps) {

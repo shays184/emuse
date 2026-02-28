@@ -11,7 +11,11 @@ const INSTRUMENTS: { id: Instrument; label: string; emoji: string }[] = [
   { id: "piano", label: "Piano", emoji: "🎹" },
 ];
 
-export function InstrumentPage({ mood, onSelect, onBack }: InstrumentPageProps) {
+export function InstrumentPage({
+  mood,
+  onSelect,
+  onBack,
+}: InstrumentPageProps) {
   return (
     <div className="flex min-h-screen flex-col items-center px-4 pt-16">
       <button

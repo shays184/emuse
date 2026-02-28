@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { ChordTooltip } from "./ChordTooltip";
 
 interface Progression {
   chords: string[];
@@ -10,6 +11,7 @@ interface Progression {
 
 interface ProgressionCardProps {
   progression: Progression;
+  instrument: string;
   index: number;
 }
 
@@ -25,13 +27,25 @@ const COMPLEXITY_COLORS: Record<number, string> = {
   3: "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400",
 };
 
-export function ProgressionCard({ progression, index }: ProgressionCardProps) {
+export function ProgressionCard({
+  progression,
+  instrument,
+  index,
+}: ProgressionCardProps) {
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <div className="overflow-hidden rounded-xl bg-surface-light shadow-sm transition-shadow hover:shadow-md dark:bg-surface-dark">
-      <button
+    <div className="overflow-visible rounded-xl bg-surface-light shadow-sm transition-shadow hover:shadow-md dark:bg-surface-dark">
+      <div
+        role="button"
+        tabIndex={0}
         onClick={() => setExpanded(!expanded)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            setExpanded(!expanded);
+          }
+        }}
         className="flex w-full cursor-pointer items-center gap-4 p-4 text-left"
       >
         <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-sm font-bold text-primary dark:bg-primary-light/10 dark:text-primary-light">
@@ -39,12 +53,21 @@ export function ProgressionCard({ progression, index }: ProgressionCardProps) {
         </span>
 
         <div className="min-w-0 flex-1">
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="font-mono text-lg font-semibold tracking-wide text-text-light dark:text-text-dark">
-              {progression.chords.join(" → ")}
-            </span>
+          <div className="flex flex-wrap items-center gap-1 text-lg">
+            {progression.chords.map((chord, i) => (
+              <span key={i} className="inline-flex items-center gap-1">
+                <span onClick={(e) => e.stopPropagation()}>
+                  <ChordTooltip chord={chord} instrument={instrument} />
+                </span>
+                {i < progression.chords.length - 1 && (
+                  <span className="mx-0.5 text-text-secondary-light dark:text-text-secondary-dark">
+                    →
+                  </span>
+                )}
+              </span>
+            ))}
             <span
-              className={`rounded-full px-2 py-0.5 text-xs font-medium ${COMPLEXITY_COLORS[progression.complexity] ?? ""}`}
+              className={`ml-2 rounded-full px-2 py-0.5 text-xs font-medium ${COMPLEXITY_COLORS[progression.complexity] ?? ""}`}
             >
               {COMPLEXITY_LABELS[progression.complexity]}
             </span>
@@ -59,7 +82,7 @@ export function ProgressionCard({ progression, index }: ProgressionCardProps) {
         >
           ▼
         </span>
-      </button>
+      </div>
 
       {expanded && (
         <div className="border-t border-gray-200 px-4 pb-4 pt-3 dark:border-gray-700">

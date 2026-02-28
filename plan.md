@@ -25,10 +25,10 @@ Refer to `spec.md` for full requirements, architecture, and data shape.
 ☐ Verify full flow works end to end
 
 ### Phase 2: Progressions Enhancements
-☐ Add complexity filter (beginner / intermediate / advanced)
-☐ Compile list of all unique chords used across the dataset
-☐ Save chord diagram images from tab4u.com for each unique chord — fretboard diagrams for guitar, keyboard diagrams for piano. Store in `src/assets/chords/guitar/` and `src/assets/chords/piano/`
-☐ Add hover-to-preview on chord names — hovering a chord in a progression shows the chord diagram image as a tooltip/popover
+☑ Add complexity filter (beginner / intermediate / advanced)
+☑ Compile list of all unique chords used across the dataset (46 unique chords)
+☑ Build SVG chord diagram components (guitar fretboard + piano keyboard) with fingering data in `src/data/chordData.ts` — replaced static images approach with code-rendered SVGs (no copyright issues, scales perfectly, easy to style)
+☑ Add hover-to-preview on chord names — hovering a chord in a progression shows the diagram as a tooltip/popover. Complex chords have multiple voicings with arrow navigation.
 
 ### Phase 3: Favorites
 ☐ Add "Save to favorites" button on each progression
@@ -108,23 +108,25 @@ Refer to `spec.md` for full requirements, architecture, and data shape.
 ## Phase 2: Progressions Enhancements
 
 **Affected Files:**
-- `src/pages/ProgressionsPage.tsx` — add complexity filter
-- `src/components/ComplexityFilter.tsx` (new) — filter control component
-- `src/components/ChordTooltip.tsx` (new) — hover-to-preview tooltip showing chord diagram image
-- `src/components/ProgressionCard.tsx` — make chord names hoverable, integrate tooltip
-- `src/assets/chords/guitar/` (new) — chord diagram images for guitar (fretboard style, from tab4u.com)
-- `src/assets/chords/piano/` (new) — chord diagram images for piano (keyboard style, from tab4u.com)
+- `src/pages/ProgressionsPage.tsx` — add complexity filter, pass instrument prop
+- `src/components/ComplexityFilter.tsx` (new) — pill-style filter control (Beginner / Intermediate / Advanced / All)
+- `src/components/ChordTooltip.tsx` (new) — hover-to-preview tooltip wrapping chord names, shows SVG diagram
+- `src/components/GuitarDiagram.tsx` (new) — SVG fretboard diagram (fret dots, open/muted strings, barre chords)
+- `src/components/PianoDiagram.tsx` (new) — SVG piano keyboard diagram (highlighted keys with note names)
+- `src/data/chordData.ts` (new) — chord fingering data for 46 unique chords (guitar frets + piano notes), supports multiple voicings per chord
+- `src/components/ProgressionCard.tsx` — make chord names hoverable, integrate tooltip, simplified expanded view (scale + theory only)
 
-**Goal:** Progressions screen gets richer — users can filter by skill level and see chord diagrams on hover. Each chord name in a progression is hoverable, showing the diagram as a tooltip.
+**Goal:** Progressions screen gets richer — users can filter by skill level and see chord diagrams on hover. Each chord name in a progression is hoverable, showing a code-rendered SVG diagram as a tooltip.
 
-**Done means:** Complexity filter narrows the progression list. Hovering any chord name shows the correct chord diagram image (fretboard for guitar, keyboard for piano). Tooltip disappears on mouse-out.
+**Done means:** Complexity filter narrows the progression list. Hovering any chord name shows the correct SVG chord diagram (fretboard for guitar, keyboard for piano). Guitar chords with multiple voicings show arrow navigation. Piano diagrams display note names on keys. Tooltip disappears on mouse-out.
 
 **Test it:**
 1. Navigate to progressions → select "Beginner" filter → only beginner progressions appear
 2. Switch to "Advanced" → list updates accordingly
-3. With Guitar selected → hover a chord name (e.g., "Am") → see fretboard diagram in tooltip
-4. Move mouse away → tooltip disappears
-5. Go back, select Piano → hover a chord name → see keyboard diagram in tooltip
+3. With Guitar selected → hover a chord name (e.g., "Am") → see SVG fretboard diagram in tooltip
+4. For complex chords (e.g., Cmaj7) → see left/right arrows to cycle voicings
+5. Move mouse away → tooltip disappears
+6. Go back, select Piano → hover a chord name → see keyboard diagram with note names on keys
 
 ---
 

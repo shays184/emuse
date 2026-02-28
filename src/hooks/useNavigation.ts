@@ -20,7 +20,11 @@ export function useNavigation() {
   const [state, setState] = useState<NavigationState>(INITIAL_STATE);
 
   const goToInstrument = useCallback((mood: string) => {
-    setState({ screen: "instrument", selectedMood: mood, selectedInstrument: null });
+    setState({
+      screen: "instrument",
+      selectedMood: mood,
+      selectedInstrument: null,
+    });
   }, []);
 
   const goToProgressions = useCallback((instrument: Instrument) => {

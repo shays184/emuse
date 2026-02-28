@@ -3,23 +3,26 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --color-primary: #6C2BD9;
-  --color-primary-light: #A78BFA;
-  --color-secondary: #2563EB;
-  --color-secondary-light: #60A5FA;
-  --color-bg-light: #F9F7F4;
-  --color-bg-dark: #0F0D1A;
-  --color-surface-light: #FFFFFF;
-  --color-surface-dark: #1E1B2E;
-  --color-text-light: #1C1917;
-  --color-text-dark: #F5F3F0;
-  --color-text-secondary-light: #78716C;
-  --color-text-secondary-dark: #A8A3B8;
+  --color-primary: #6c2bd9;
+  --color-primary-light: #a78bfa;
+  --color-secondary: #2563eb;
+  --color-secondary-light: #60a5fa;
+  --color-bg-light: #f9f7f4;
+  --color-bg-dark: #0f0d1a;
+  --color-surface-light: #ffffff;
+  --color-surface-dark: #1e1b2e;
+  --color-text-light: #1c1917;
+  --color-text-dark: #f5f3f0;
+  --color-text-secondary-light: #78716c;
+  --color-text-secondary-dark: #a8a3b8;
 }
 
 body {
   @apply bg-bg-light text-text-light dark:bg-bg-dark dark:text-text-dark;
-  font-family: system-ui, -apple-system, sans-serif;
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
   margin: 0;
   min-height: 100vh;
 }

@@ -55,7 +55,7 @@ A list of chord progressions matching the selected mood, sorted by complexity (b
 - Brief theory explanation (why this progression evokes this mood)
 - "Save to favorites" button
 
-**Chord display**: Each chord name in a progression is hoverable. On hover, a tooltip/popover shows the chord diagram image (fretboard diagram for guitar, keyboard diagram for piano) — styled like tab4u.com. Chord images are static assets, one per unique chord per instrument, stored in `src/assets/chords/guitar/` and `src/assets/chords/piano/`. On mobile (future): tap-to-reveal instead of hover.
+**Chord display**: Each chord name in a progression is hoverable. On hover, a tooltip/popover shows a chord diagram (fretboard diagram for guitar, keyboard diagram for piano) — styled after tab4u.com. Diagrams are rendered as SVGs in code (not static image files) using fingering data in `src/data/chordData.ts`. Guitar diagrams show fret positions, open/muted strings, and barre chords. Piano diagrams show highlighted keys with note names. Complex chords (7ths, maj7s, 9ths) offer multiple voicings with arrow navigation. On mobile (future): tap-to-reveal instead of hover.
 
 **Complexity filter**: Users can filter progressions by skill level (e.g., beginner / intermediate / advanced) instead of only seeing them sorted.
 

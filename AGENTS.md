@@ -45,26 +45,25 @@ emuse/
 │   ├── App.tsx            # Root component, navigation state
 │   ├── index.css          # Tailwind imports
 │   ├── data/
-│   │   └── progressions.json      # Static mood-progression dataset (90 entries)
+│   │   ├── progressions.json      # Static mood-progression dataset (90 entries)
+│   │   └── chordData.ts           # Fingering data for 46 chords (guitar frets + piano notes)
 │   ├── pages/
 │   │   ├── LandingPage.tsx        # Mood selection, free text input
 │   │   ├── InstrumentPage.tsx     # Guitar / Piano choice
 │   │   └── ProgressionsPage.tsx   # Progression list with expandable cards
 │   ├── components/
-│   │   ├── MoodTile.tsx
-│   │   ├── ProgressionCard.tsx
-│   │   ├── ComplexityFilter.tsx
-│   │   ├── ChordTooltip.tsx
-│   │   └── FavoritesOverlay.tsx
+│   │   ├── MoodTile.tsx           # Mood selection tile with emoji + gradient
+│   │   ├── ProgressionCard.tsx    # Expandable card (scale, theory, hoverable chords)
+│   │   ├── ComplexityFilter.tsx   # Pill-style filter (Beginner/Intermediate/Advanced/All)
+│   │   ├── ChordTooltip.tsx       # Hover wrapper — shows diagram tooltip, voicing nav
+│   │   ├── GuitarDiagram.tsx      # SVG fretboard renderer (dots, barres, open/muted)
+│   │   ├── PianoDiagram.tsx       # SVG piano keyboard renderer (highlighted keys + note names)
+│   │   └── FavoritesOverlay.tsx   # (future) Favorites panel
 │   ├── hooks/
 │   │   ├── useNavigation.ts       # State-based navigation (no React Router)
-│   │   └── useFavorites.ts        # localStorage persistence
+│   │   └── useFavorites.ts        # (future) localStorage persistence
 │   ├── services/
-│   │   └── api.ts                 # Client-side API calls
-│   └── assets/
-│       └── chords/
-│           ├── guitar/            # Fretboard diagram images
-│           └── piano/             # Keyboard diagram images
+│   │   └── api.ts                 # (future) Client-side API calls
 ```
 
 ## Technology Stack
@@ -226,8 +225,20 @@ If the answer is anything — update the docs before moving on.
 
 ## Key Decisions Log
 
-_Add entries here as implementation reveals decisions worth preserving._
+1. **SVG components over static images for chord diagrams** — The spec originally called for static chord diagram images saved from tab4u.com. We switched to code-rendered SVGs (`GuitarDiagram.tsx`, `PianoDiagram.tsx`) with fingering data in `chordData.ts`. Rationale: no copyright issues, scales perfectly at any size, easy to style with the app's color palette, and enables features like voicing navigation.
+
+2. **Multiple voicings for complex guitar chords** — Guitar chords like 7ths, maj7s, and 9ths store an array of `GuitarChord` voicings in `chordData.ts`. The tooltip shows arrow buttons to cycle through them. Simple chords (major, minor) have a single voicing.
+
+3. **Progression variety** — Dataset uses a mix of 3, 4, 5, and 6-chord progressions (not just 4-chord) for musical variety.
+
+4. **Simplified ProgressionCard expanded view** — Originally showed a 2x2 grid with key, scale, chord count, level, and individual chord badges. Trimmed to only scale and "Why it works" theory text to avoid redundancy with the card header.
 
 ## Gotchas & Lessons Learned
 
-_Add entries here as you discover non-obvious behaviors, workarounds, or patterns._
+1. **Tooltip clipping** — Cards with `overflow-hidden` clip tooltips that extend beyond card bounds. Fix: use `overflow-visible` on the card container. Also needs high `z-index` (`z-[100]`) and `pointer-events-none` on the tooltip div itself.
+
+2. **Guitar diagram spacing** — The chord name text above an SVG fretboard can collide with the diagram at small tooltip sizes. `TOP_PAD` in `GuitarDiagram.tsx` controls vertical spacing — set to 36 to avoid overlap.
+
+3. **PowerShell heredoc** — Git commit with heredoc syntax (`$(cat <<'EOF'...)`) doesn't work in PowerShell. Use multiple `-m` flags instead.
+
+4. **Tailwind dark mode** — `index.html` has `class="dark"` on the `<html>` element. All dark-mode styles use Tailwind's `dark:` prefix. This is set from the start, not toggled yet.
