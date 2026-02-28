@@ -1,0 +1,200 @@
+import { useState } from "react";
+import { FavoriteProgression } from "../hooks/useFavorites";
+import { ChordTooltip } from "./ChordTooltip";
+
+interface FavoritesOverlayProps {
+  favorites: FavoriteProgression[];
+  onRemove: (id: string) => void;
+  onClose: () => void;
+}
+
+const COMPLEXITY_LABELS: Record<number, string> = {
+  1: "Beginner",
+  2: "Intermediate",
+  3: "Advanced",
+};
+
+const MOOD_TAG_COLORS: Record<string, string> = {
+  Happy:
+    "bg-amber-400/20 text-amber-600 dark:bg-amber-400/15 dark:text-amber-400",
+  Sad: "bg-blue-500/20 text-blue-600 dark:bg-blue-500/15 dark:text-blue-400",
+  Calm: "bg-teal-400/20 text-teal-600 dark:bg-teal-400/15 dark:text-teal-400",
+  Energetic:
+    "bg-red-500/20 text-red-600 dark:bg-red-500/15 dark:text-orange-400",
+  Melancholy:
+    "bg-purple-500/20 text-purple-600 dark:bg-purple-500/15 dark:text-purple-400",
+  Romantic:
+    "bg-pink-500/20 text-pink-600 dark:bg-pink-500/15 dark:text-pink-400",
+};
+
+const INSTRUMENT_TAG_COLORS: Record<string, string> = {
+  guitar:
+    "bg-orange-400/20 text-orange-700 dark:bg-orange-400/15 dark:text-orange-400",
+  piano:
+    "bg-sky-400/20 text-sky-700 dark:bg-sky-400/15 dark:text-sky-400",
+};
+
+function FavoriteCard({
+  fav,
+  onRemove,
+}: {
+  fav: FavoriteProgression;
+  onRemove: () => void;
+}) {
+  const [expanded, setExpanded] = useState(false);
+  const moodColor =
+    MOOD_TAG_COLORS[fav.mood] ??
+    "bg-gray-400/20 text-gray-600 dark:bg-gray-400/15 dark:text-gray-400";
+  const instrumentColor =
+    INSTRUMENT_TAG_COLORS[fav.instrument] ??
+    "bg-gray-400/20 text-gray-600 dark:bg-gray-400/15 dark:text-gray-400";
+
+  return (
+    <div className="overflow-visible rounded-xl bg-surface-light shadow-sm dark:bg-surface-dark">
+      <div
+        role="button"
+        tabIndex={0}
+        onClick={() => setExpanded(!expanded)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            setExpanded(!expanded);
+          }
+        }}
+        className="cursor-pointer p-4"
+      >
+        <div className="mb-2 flex items-start justify-between gap-2">
+          <div className="flex flex-wrap items-center gap-2 text-xs">
+            <span
+              className={`rounded-full px-2 py-0.5 font-medium ${moodColor}`}
+            >
+              {fav.mood}
+            </span>
+            <span
+              className={`rounded-full px-2 py-0.5 font-medium ${instrumentColor}`}
+            >
+              {fav.instrument.charAt(0).toUpperCase() +
+                fav.instrument.slice(1)}
+            </span>
+            <span className="text-text-secondary-light dark:text-text-secondary-dark">
+              {COMPLEXITY_LABELS[fav.complexity]}
+            </span>
+          </div>
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onRemove();
+            }}
+            aria-label="Remove from favorites"
+            className="shrink-0 cursor-pointer text-red-400 transition-colors hover:text-red-500"
+          >
+            ♥
+          </button>
+        </div>
+
+        <div className="flex items-center justify-between">
+          <div>
+            <div className="flex flex-wrap items-center gap-1 text-lg font-semibold">
+              {fav.chords.map((chord, i) => (
+                <span key={i} className="inline-flex items-center gap-1">
+                  <span onClick={(e) => e.stopPropagation()}>
+                    <ChordTooltip chord={chord} instrument={fav.instrument} />
+                  </span>
+                  {i < fav.chords.length - 1 && (
+                    <span className="mx-0.5 text-text-secondary-light dark:text-text-secondary-dark">
+                      →
+                    </span>
+                  )}
+                </span>
+              ))}
+            </div>
+            <p className="mt-1 text-sm text-text-secondary-light dark:text-text-secondary-dark">
+              Key of {fav.key}
+            </p>
+          </div>
+          <span
+            className={`text-xs text-text-secondary-light transition-transform duration-200 dark:text-text-secondary-dark ${expanded ? "rotate-180" : ""}`}
+          >
+            ▼
+          </span>
+        </div>
+      </div>
+
+      {expanded && (
+        <div className="border-t border-gray-200 px-4 pb-4 pt-3 dark:border-gray-700">
+          <div className="mb-3 inline-block rounded-lg bg-primary/5 px-3 py-2 text-sm dark:bg-primary-light/5">
+            <span className="text-xs font-medium text-text-secondary-light dark:text-text-secondary-dark">
+              Scale:{" "}
+            </span>
+            <span className="font-semibold text-text-light dark:text-text-dark">
+              {fav.scale}
+            </span>
+          </div>
+
+          <div className="rounded-lg bg-secondary/5 px-4 py-3 dark:bg-secondary-light/5">
+            <span className="mb-1 block text-xs font-medium text-secondary dark:text-secondary-light">
+              Why it works
+            </span>
+            <p className="text-sm leading-relaxed text-text-light dark:text-text-dark">
+              {fav.theory}
+            </p>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export function FavoritesOverlay({
+  favorites,
+  onRemove,
+  onClose,
+}: FavoritesOverlayProps) {
+  return (
+    <div className="fixed inset-0 z-50 flex justify-end">
+      <div
+        className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+        onClick={onClose}
+      />
+
+      <div className="relative flex h-full w-full max-w-md flex-col bg-bg-light dark:bg-bg-dark">
+        <div className="flex items-center justify-between border-b border-gray-200 px-6 py-4 dark:border-gray-700">
+          <h2 className="text-xl font-bold text-text-light dark:text-text-dark">
+            Favorites
+          </h2>
+          <button
+            onClick={onClose}
+            className="cursor-pointer rounded-lg p-2 text-text-secondary-light transition-colors hover:bg-surface-light hover:text-text-light dark:text-text-secondary-dark dark:hover:bg-surface-dark dark:hover:text-text-dark"
+            aria-label="Close favorites"
+          >
+            ✕
+          </button>
+        </div>
+
+        <div className="flex-1 overflow-y-auto px-6 py-4">
+          {favorites.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-20 text-center">
+              <span className="mb-3 text-4xl">♡</span>
+              <p className="text-lg font-medium text-text-light dark:text-text-dark">
+                No favorites yet
+              </p>
+              <p className="mt-1 text-sm text-text-secondary-light dark:text-text-secondary-dark">
+                Tap the heart on any progression to save it here
+              </p>
+            </div>
+          ) : (
+            <div className="flex flex-col gap-3">
+              {favorites.map((fav) => (
+                <FavoriteCard
+                  key={fav.id}
+                  fav={fav}
+                  onRemove={() => onRemove(fav.id)}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}

@@ -31,10 +31,11 @@ Refer to `spec.md` for full requirements, architecture, and data shape.
 ☑ Add hover-to-preview on chord names — hovering a chord in a progression shows the diagram as a tooltip/popover. Complex chords have multiple voicings with arrow navigation.
 
 ### Phase 3: Favorites
-☐ Add "Save to favorites" button on each progression
-☐ Implement localStorage persistence for favorites
-☐ Build Favorites overlay (accessible from persistent tab/icon)
-☐ Handle empty state (no favorites yet)
+☑ Add "Save to favorites" heart toggle on each progression card
+☑ Implement localStorage persistence for favorites (`useFavorites` hook)
+☑ Build Favorites overlay (slide-in panel with expandable cards, chord diagram tooltips, mood/instrument color tags)
+☑ Handle empty state (no favorites yet)
+☑ Fixed-position tooltips to avoid clipping inside overlay scroll container
 
 ### Phase 4: Free Text AI Path
 ☐ Create `.env` with LLM API key (server-side only, add `.env` to `.gitignore`)
@@ -133,22 +134,27 @@ Refer to `spec.md` for full requirements, architecture, and data shape.
 ## Phase 3: Favorites
 
 **Affected Files:**
-- `src/components/ProgressionCard.tsx` — add "Save to favorites" button
-- `src/components/FavoritesOverlay.tsx` (new) — overlay showing saved progressions as a flat list (each item shows: mood, instrument, chords, key)
-- `src/hooks/useFavorites.ts` (new) — localStorage read/write logic for favorites
-- `src/App.tsx` — add favorites icon/tab in persistent UI
+- `src/hooks/useFavorites.ts` (new) — localStorage read/write with add/remove/toggle/isFavorite. Each favorite stores mood, instrument, chords, key, scale, complexity, theory, timestamp.
+- `src/components/ProgressionCard.tsx` — replaced index number with heart toggle button (♡/♥)
+- `src/components/FavoritesOverlay.tsx` (new) — slide-in panel with expandable favorite cards, chord diagram tooltips (via ChordTooltip), mood-colored + instrument-colored tags, empty state
+- `src/components/ChordTooltip.tsx` — switched from absolute to fixed positioning to avoid clipping in scroll containers
+- `src/pages/ProgressionsPage.tsx` — receives isFavorite/onToggleFavorite from App
+- `src/App.tsx` — owns favorites state, renders floating heart button with badge + overlay
+- `src/test/setup.ts` — added localStorage polyfill for test environment
 
 **Goal:** Users can save progressions they like and access them from anywhere in the app. Favorites persist across sessions via localStorage.
 
-**Done means:** Save a progression → it appears in the Favorites overlay. Close and reopen the browser → favorites are still there. Remove a favorite → it disappears.
+**Done means:** Save a progression → it appears in the Favorites overlay. Close and reopen the browser → favorites are still there. Remove a favorite → it disappears. Favorite cards are expandable with theory and chord diagram tooltips.
 
 **Test it:**
-1. Navigate to progressions → click "Save to favorites" on a progression
-2. Open the Favorites overlay → see the saved progression
-3. Save a second progression → both appear in favorites
-4. Remove one → only one remains
+1. Navigate to progressions → tap the heart on a progression → heart fills red
+2. Click the floating ♥ button (bottom-right) → Favorites overlay slides in → see the saved progression with mood/instrument tags
+3. Save a second progression → both appear in favorites with badge count updating
+4. Tap the red heart on a favorite → it's removed
 5. Refresh the browser → favorites persist
-6. Open favorites with nothing saved → see an empty state message
+6. Open favorites with nothing saved → see "No favorites yet" empty state
+7. Click a favorite card → expands to show scale and theory
+8. Hover a chord name in favorites → see chord diagram tooltip (not clipped)
 
 ---
 

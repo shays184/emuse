@@ -58,10 +58,10 @@ emuse/
 │   │   ├── ChordTooltip.tsx       # Hover wrapper — shows diagram tooltip, voicing nav
 │   │   ├── GuitarDiagram.tsx      # SVG fretboard renderer (dots, barres, open/muted)
 │   │   ├── PianoDiagram.tsx       # SVG piano keyboard renderer (highlighted keys + note names)
-│   │   └── FavoritesOverlay.tsx   # (future) Favorites panel
+│   │   └── FavoritesOverlay.tsx   # Slide-in panel with expandable favorite cards + tooltips
 │   ├── hooks/
 │   │   ├── useNavigation.ts       # State-based navigation (no React Router)
-│   │   └── useFavorites.ts        # (future) localStorage persistence
+│   │   └── useFavorites.ts        # localStorage persistence (add/remove/toggle/isFavorite)
 │   ├── services/
 │   │   └── api.ts                 # (future) Client-side API calls
 ```
@@ -233,12 +233,20 @@ If the answer is anything — update the docs before moving on.
 
 4. **Simplified ProgressionCard expanded view** — Originally showed a 2x2 grid with key, scale, chord count, level, and individual chord badges. Trimmed to only scale and "Why it works" theory text to avoid redundancy with the card header.
 
+5. **Favorites state lifted to App.tsx** — `useFavorites()` is called once in `App.tsx` and passed down via props (not called in multiple components). This ensures a single source of truth shared between `ProgressionsPage` and `FavoritesOverlay`.
+
+6. **Fixed-position tooltips** — `ChordTooltip` uses `position: fixed` with viewport-relative coordinates instead of `position: absolute`. This prevents clipping by any parent `overflow` container (critical for the favorites overlay scroll area).
+
 ## Gotchas & Lessons Learned
 
-1. **Tooltip clipping** — Cards with `overflow-hidden` clip tooltips that extend beyond card bounds. Fix: use `overflow-visible` on the card container. Also needs high `z-index` (`z-[100]`) and `pointer-events-none` on the tooltip div itself.
+1. **Tooltip clipping** — Cards with `overflow-hidden` clip tooltips that extend beyond card bounds. For cards on the main page, `overflow-visible` works. For tooltips inside scroll containers (like the favorites overlay), `overflow-visible` doesn't help because CSS forces both overflow axes to clip when one is non-visible. Solution: use `position: fixed` on the tooltip so it's positioned relative to the viewport, bypassing all parent overflow.
 
 2. **Guitar diagram spacing** — The chord name text above an SVG fretboard can collide with the diagram at small tooltip sizes. `TOP_PAD` in `GuitarDiagram.tsx` controls vertical spacing — set to 36 to avoid overlap.
 
 3. **PowerShell heredoc** — Git commit with heredoc syntax (`$(cat <<'EOF'...)`) doesn't work in PowerShell. Use multiple `-m` flags instead.
 
 4. **Tailwind dark mode** — `index.html` has `class="dark"` on the `<html>` element. All dark-mode styles use Tailwind's `dark:` prefix. This is set from the start, not toggled yet.
+
+5. **localStorage in tests** — jsdom's localStorage may not be fully functional (setItem throws). The test setup (`src/test/setup.ts`) includes a polyfill that provides an in-memory localStorage when the native one is broken.
+
+6. **Favorite ID generation** — Favorites are identified by `mood|instrument|chords|key`. This means the same progression saved under different instruments counts as two separate favorites (intentional — different diagrams).

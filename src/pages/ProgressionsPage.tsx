@@ -7,6 +7,23 @@ interface ProgressionsPageProps {
   mood: string;
   instrument: string;
   onBack: () => void;
+  isFavorite: (
+    mood: string,
+    instrument: string,
+    chords: string[],
+    key: string,
+  ) => boolean;
+  onToggleFavorite: (
+    mood: string,
+    instrument: string,
+    progression: {
+      chords: string[];
+      key: string;
+      scale: string;
+      complexity: number;
+      theory: string;
+    },
+  ) => void;
 }
 
 interface Progression {
@@ -26,6 +43,8 @@ export function ProgressionsPage({
   mood,
   instrument,
   onBack,
+  isFavorite,
+  onToggleFavorite,
 }: ProgressionsPageProps) {
   const [complexityFilter, setComplexityFilter] = useState<number | null>(null);
 
@@ -67,12 +86,20 @@ export function ProgressionsPage({
       </div>
 
       <div className="flex flex-col gap-3">
-        {sorted.map((progression, index) => (
+        {sorted.map((progression) => (
           <ProgressionCard
             key={`${progression.key}-${progression.chords.join("-")}`}
             progression={progression}
             instrument={instrument}
-            index={index}
+            isFavorite={isFavorite(
+              mood,
+              instrument,
+              progression.chords,
+              progression.key,
+            )}
+            onToggleFavorite={() =>
+              onToggleFavorite(mood, instrument, progression)
+            }
           />
         ))}
       </div>

@@ -12,7 +12,8 @@ interface Progression {
 interface ProgressionCardProps {
   progression: Progression;
   instrument: string;
-  index: number;
+  isFavorite: boolean;
+  onToggleFavorite: () => void;
 }
 
 const COMPLEXITY_LABELS: Record<number, string> = {
@@ -30,7 +31,8 @@ const COMPLEXITY_COLORS: Record<number, string> = {
 export function ProgressionCard({
   progression,
   instrument,
-  index,
+  isFavorite,
+  onToggleFavorite,
 }: ProgressionCardProps) {
   const [expanded, setExpanded] = useState(false);
 
@@ -48,9 +50,22 @@ export function ProgressionCard({
         }}
         className="flex w-full cursor-pointer items-center gap-4 p-4 text-left"
       >
-        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-sm font-bold text-primary dark:bg-primary-light/10 dark:text-primary-light">
-          {index + 1}
-        </span>
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            onToggleFavorite();
+          }}
+          aria-label={
+            isFavorite ? "Remove from favorites" : "Save to favorites"
+          }
+          className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-colors ${
+            isFavorite
+              ? "bg-red-100 text-red-500 dark:bg-red-900/30 dark:text-red-400"
+              : "bg-primary/10 text-primary/40 hover:text-red-400 dark:bg-primary-light/10 dark:text-primary-light/40 dark:hover:text-red-400"
+          }`}
+        >
+          {isFavorite ? "♥" : "♡"}
+        </button>
 
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-1 text-lg">

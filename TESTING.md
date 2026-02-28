@@ -46,3 +46,34 @@ npm test
 13. Verify chord diagrams match the selected instrument (fretboard for guitar, keyboard for piano)
 14. Verify complexity filter persists while browsing and expanding cards
 15. Verify tooltips don't clip or get cut off by card boundaries
+
+### Phase 3: Favorites
+
+**Saving & Removing:**
+1. Navigate to progressions → tap the heart (♡) on a progression → heart fills red (♥)
+2. Tap the same heart again → unfilled, removed from favorites
+3. Save multiple progressions from different moods and instruments
+
+**Favorites Overlay:**
+4. Click the floating ♥ button (bottom-right corner) → overlay slides in from the right
+5. See saved progressions with color-coded mood tags (Happy=amber, Sad=blue, Calm=teal, Energetic=red, Melancholy=purple, Romantic=pink)
+6. Instrument tags use distinct colors (Guitar=orange, Piano=sky blue)
+7. Badge on the floating button shows the correct favorite count
+8. Click backdrop or ✕ → overlay closes
+
+**Expandable Details in Favorites:**
+9. Click a favorite card → expands to show Scale and "Why it works" theory
+10. Click again → collapses
+
+**Chord Diagrams in Favorites:**
+11. Hover a chord name in a favorite → tooltip appears with correct diagram (fretboard/keyboard)
+12. Tooltip for the first chord should not overflow the panel (uses fixed positioning)
+13. Complex chords show voicing navigation arrows
+
+**Persistence:**
+14. Save some favorites → refresh the browser → favorites are still there
+15. Remove all favorites → see "No favorites yet" empty state with ♡ icon
+
+**Cross-checks:**
+16. Verify favorites from Guitar mood show fretboard diagrams, Piano show keyboard diagrams
+17. Verify the floating ♥ button is visible on all screens (Landing, Instrument, Progressions)
