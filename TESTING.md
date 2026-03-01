@@ -187,3 +187,35 @@ npm test
 7. If no favorites match the active filters → see "No favorites match the current filters" message
 8. Dropdowns are hidden when there are no favorites at all
 9. Filters do not persist across overlay open/close (reset each time)
+
+### Phase 6: User Profiles
+
+**Setup:** Create a Supabase project, add `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` to `.env`, run `supabase/schema.sql` in the SQL Editor.
+
+**Sign Up:**
+1. Click profile icon (top-right) when not logged in → Sign in page
+2. Click "Sign up" link → Sign up page with tagline "Save your favorites across devices..."
+3. Enter username, email, password → Sign up
+4. See "Check your email to confirm" message
+5. (With email confirmation disabled in Supabase) Sign in with same credentials
+
+**Sign In:**
+6. From Sign up page, click "Sign in" → Sign in page
+7. Enter email and password → Sign in → returns to landing
+8. Profile icon changes to user icon when logged in
+
+**Profile:**
+9. Click profile icon when logged in → Profile page
+10. See avatar (initials), display name input, email
+11. Change display name → blur → saves to Supabase
+12. Change default instrument (Guitar/Piano) → saves immediately
+13. Change theme (Dark/Light/Mood) → saves immediately
+14. Sign out → returns to landing, profile icon shows lock again
+
+**Cloud Favorites:**
+15. Log in → add a favorite → sign out → sign in again → favorite still there
+16. Favorites from different devices sync when same account
+
+**Recently viewed (when logged in):**
+17. Click clock icon (bottom-right, left of favorites) → overlay with recently viewed progressions
+18. Each item shows chords, play button, expandable scale/theory/songs

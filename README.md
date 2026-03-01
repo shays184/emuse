@@ -4,12 +4,12 @@ A web app where musicians get chord progressions based on their current mood.
 
 ## Current Status
 
-**Phases 0–5.1 Complete** — Full flow with AI, security, polish, audio, and song matching!
+**Phases 0–6 Complete** — Full flow with AI, security, polish, audio, song matching, and user profiles!
 
 **What works right now:**
 - Landing page with 6 mood tiles (Happy, Sad, Calm, Energetic, Melancholy, Romantic)
 - "Surprise me" random mood selection
-- Instrument selection (Guitar / Piano)
+- Mood selection goes directly to progressions (default instrument from profile)
 - 90 chord progressions (15 per mood, mix of 3–6 chords each)
 - Expandable cards showing scale and "Why it works" theory
 - Complexity filter (Beginner / Intermediate / Advanced / All)
@@ -33,7 +33,12 @@ A web app where musicians get chord progressions based on their current mood.
 - Currently playing chord is highlighted during playback
 - "Songs like this" section in expanded cards shows famous songs using the same chord pattern
 - Audio and song matching also available in favorites overlay
-- Favorites filter: dropdown selects for mood, instrument, and level
+- Favorites filter: mood, instrument, and level dropdowns
+- User profiles (Supabase): Sign up, Sign in, Sign out
+- Profile: display name, avatar, instrument/theme preferences
+- Cloud-synced favorites when logged in
+- Instrument switcher on progressions page (Guitar/Piano buttons)
+- Recently viewed overlay (clock icon) with chord view and play
 
 > **Note:** The free text AI path is implemented but not yet verified end-to-end due to OpenAI API quota limits. It requires a funded OpenAI account.
 
@@ -46,10 +51,16 @@ npm install
 npm run dev
 ```
 
-For the AI free text path, create a `.env` file (see `.env.example`):
+Create a `.env` file (see `.env.example`):
 ```
 OPENAI_API_KEY=sk-your-key-here
+
+# Supabase (profiles, cloud favorites)
+VITE_SUPABASE_URL=https://your-project.supabase.co
+VITE_SUPABASE_ANON_KEY=your-anon-key
 ```
+
+See **[SUPABASE_SETUP.md](SUPABASE_SETUP.md)** for step-by-step Supabase configuration.
 
 ## Scripts
 

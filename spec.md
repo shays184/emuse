@@ -106,7 +106,7 @@ Each mood contains 15 progressions: 5 per complexity level (1=beginner, 2=interm
 ## Parking Lot — What's Out (for now)
 
 - ~~Audio preview / playback of progressions~~ — **Done.** Web Audio API synth plays chords in sequence with active chord highlighting.
-- User accounts and server-side persistence
+- ~~User accounts and server-side persistence~~ — **Done.** Supabase auth + profiles. Cloud-synced favorites, recently viewed overlay.
 - Instruments beyond guitar and piano
 - Social features (sharing, community)
 - Complexity sorting and theory annotations for the free text AI path

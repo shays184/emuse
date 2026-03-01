@@ -86,5 +86,5 @@ export function useTheme() {
     });
   }, []);
 
-  return { mode, cycleTheme, setActiveMood };
+  return { mode, setMode, cycleTheme, setActiveMood };
 }

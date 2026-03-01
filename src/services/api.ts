@@ -21,5 +21,13 @@ export async function generateProgressions(mood: string): Promise<AIResponse> {
     );
   }
 
-  return res.json();
+  const text = await res.text();
+  if (!text?.trim()) {
+    throw new Error("Empty response from server");
+  }
+  try {
+    return JSON.parse(text) as AIResponse;
+  } catch {
+    throw new Error("Invalid response from server");
+  }
 }

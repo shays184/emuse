@@ -1,4 +1,4 @@
-import { defineConfig, type Plugin } from "vite";
+import { defineConfig, loadEnv, type Plugin } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import { resolve } from "path";
@@ -137,11 +137,27 @@ function apiDevPlugin(): Plugin {
   };
 }
 
-export default defineConfig({
-  plugins: [react(), tailwindcss(), apiDevPlugin()],
-  resolve: {
-    alias: {
-      "@": resolve(__dirname, "src"),
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, process.cwd(), "");
+  const supabaseUrl =
+    env.VITE_SUPABASE_URL || "https://ydxwymegoopuptztcokg.supabase.co";
+
+  return {
+    plugins: [react(), tailwindcss(), apiDevPlugin()],
+    resolve: {
+      alias: {
+        "@": resolve(__dirname, "src"),
+      },
     },
-  },
+    server: {
+      proxy: {
+        "/supabase": {
+          target: supabaseUrl,
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/supabase/, ""),
+          secure: true,
+        },
+      },
+    },
+  };
 });

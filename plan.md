@@ -67,6 +67,16 @@ Refer to `spec.md` for full requirements, architecture, and data shape.
 ☑ Empty state when no favorites match active filters
 ☑ Filter bar hidden when no favorites exist
 
+### Phase 6: User Profiles (Supabase)
+☑ Supabase client + env (VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY)
+☑ Auth: Sign up (username, email, password) + tagline, Sign in, Sign out
+☑ Profile page: display name, avatar (initials), instrument preference, theme preference
+☑ Cloud-synced favorites — when logged in, favorites stored in Supabase
+☑ Recently viewed — overlay (clock icon) with last 20 progressions, chord view + play
+☑ Theme preference synced to profile when logged in
+☑ Profile button (top-right): Sign in when guest, Profile when logged in
+☑ Schema: profiles, collections, favorites, recently_viewed (run supabase/schema.sql)
+
 ### Cosmetic: Theme Toggle
 ☑ 3-mode theme toggle (Dark / Light / Mood) — button in bottom-left corner, cycles through modes
 ☑ Light mode — warm off-white background, dark text

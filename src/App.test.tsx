@@ -1,15 +1,24 @@
 import { render, screen } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
+import { AuthProvider } from "./contexts/AuthContext";
 import App from "./App";
+
+function TestWrapper() {
+  return (
+    <AuthProvider>
+      <App />
+    </AuthProvider>
+  );
+}
 
 describe("App", () => {
   it("renders the landing page with eMuse heading", () => {
-    render(<App />);
+    render(<TestWrapper />);
     expect(screen.getByText("eMuse")).toBeInTheDocument();
   });
 
   it("renders all six mood tiles", () => {
-    render(<App />);
+    render(<TestWrapper />);
     const moods = [
       "Happy",
       "Sad",
@@ -24,7 +33,7 @@ describe("App", () => {
   });
 
   it("renders the Surprise me button", () => {
-    render(<App />);
+    render(<TestWrapper />);
     expect(screen.getByText(/surprise me/i)).toBeInTheDocument();
   });
 });

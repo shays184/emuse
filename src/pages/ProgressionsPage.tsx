@@ -8,6 +8,8 @@ interface ProgressionsPageProps {
   mood: string;
   instrument: string | null;
   onBack: () => void;
+  onInstrumentChange?: (instrument: "guitar" | "piano") => void;
+  onViewProgression?: (progression: Progression) => void;
   isFavorite: (
     mood: string,
     instrument: string,
@@ -46,6 +48,8 @@ export function ProgressionsPage({
   mood,
   instrument,
   onBack,
+  onInstrumentChange,
+  onViewProgression,
   isFavorite,
   onToggleFavorite,
   isFreeText = false,
@@ -118,16 +122,42 @@ export function ProgressionsPage({
         </button>
       </nav>
 
-      <div className="mb-6">
-        <h2 className="mb-1 text-3xl font-bold text-text-light dark:text-text-dark">
-          {mood}
-        </h2>
-        <p className="text-text-secondary-light dark:text-text-secondary-dark">
-          {instrument
-            ? instrument.charAt(0).toUpperCase() + instrument.slice(1)
-            : ""}{" "}
-          • {sorted.length} progressions
-        </p>
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <h2 className="mb-1 text-3xl font-bold text-text-light dark:text-text-dark">
+            {mood}
+          </h2>
+          <p className="text-text-secondary-light dark:text-text-secondary-dark">
+            {instrument
+              ? instrument.charAt(0).toUpperCase() + instrument.slice(1)
+              : ""}{" "}
+            • {sorted.length} progressions
+          </p>
+        </div>
+        {onInstrumentChange && (
+          <div className="flex gap-2">
+            <button
+              onClick={() => onInstrumentChange("guitar")}
+              className={`rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
+                (instrument ?? "guitar") === "guitar"
+                  ? "bg-primary text-white dark:bg-primary-light dark:text-bg-dark"
+                  : "bg-surface-light text-text-secondary-light hover:bg-gray-200 dark:bg-surface-dark dark:text-text-secondary-dark dark:hover:bg-gray-700"
+              }`}
+            >
+              🎸 Guitar
+            </button>
+            <button
+              onClick={() => onInstrumentChange("piano")}
+              className={`rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
+                (instrument ?? "guitar") === "piano"
+                  ? "bg-primary text-white dark:bg-primary-light dark:text-bg-dark"
+                  : "bg-surface-light text-text-secondary-light hover:bg-gray-200 dark:bg-surface-dark dark:text-text-secondary-dark dark:hover:bg-gray-700"
+              }`}
+            >
+              🎹 Piano
+            </button>
+          </div>
+        )}
       </div>
 
       <div className="mb-6">
@@ -143,6 +173,8 @@ export function ProgressionsPage({
             key={`${progression.key}-${progression.chords.join("-")}`}
             progression={progression}
             instrument={instrument ?? "guitar"}
+            mood={mood}
+            onView={onViewProgression}
             isFavorite={isFavorite(
               mood,
               instrument ?? "guitar",

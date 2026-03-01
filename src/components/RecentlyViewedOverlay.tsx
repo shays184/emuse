@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef, useCallback } from "react";
-import { FavoriteProgression } from "../hooks/useFavorites";
 import { ChordTooltip } from "./ChordTooltip";
 import {
   playProgression,
@@ -7,12 +6,23 @@ import {
   type Instrument,
 } from "../services/audioEngine";
 import { findSimilarSongs } from "../data/songData";
+import { supabase } from "../lib/supabase";
 
-interface FavoritesOverlayProps {
-  favorites: FavoriteProgression[];
-  onRemove: (id: string) => void;
+interface RecentlyViewedItem {
+  id: string;
+  mood: string;
+  instrument: string;
+  chords: string[];
+  key: string;
+  scale: string;
+  theory: string;
+  complexity: number;
+  viewed_at: string;
+}
+
+interface RecentlyViewedOverlayProps {
+  userId: string;
   onClose: () => void;
-  userId?: string | null;
 }
 
 const COMPLEXITY_LABELS: Record<number, string> = {
@@ -40,13 +50,7 @@ const INSTRUMENT_TAG_COLORS: Record<string, string> = {
   piano: "bg-sky-400/20 text-sky-700 dark:bg-sky-400/15 dark:text-sky-400",
 };
 
-function FavoriteCard({
-  fav,
-  onRemove,
-}: {
-  fav: FavoriteProgression;
-  onRemove: () => void;
-}) {
+function RecentCard({ item }: { item: RecentlyViewedItem }) {
   const [expanded, setExpanded] = useState(false);
   const [playing, setPlaying] = useState(false);
   const [activeChord, setActiveChord] = useState(-1);
@@ -62,8 +66,8 @@ function FavoriteCard({
       setPlaying(true);
       setActiveChord(0);
       handleRef.current = playProgression(
-        fav.chords,
-        fav.instrument as Instrument,
+        item.chords,
+        item.instrument as Instrument,
         (idx) => setActiveChord(idx),
         () => {
           setPlaying(false);
@@ -72,16 +76,15 @@ function FavoriteCard({
         },
       );
     },
-    [playing, fav.chords, fav.instrument],
+    [playing, item.chords, item.instrument],
   );
 
-  const similarSongs = findSimilarSongs(fav.chords, fav.key);
-
+  const similarSongs = findSimilarSongs(item.chords, item.key);
   const moodColor =
-    MOOD_TAG_COLORS[fav.mood] ??
+    MOOD_TAG_COLORS[item.mood] ??
     "bg-gray-400/20 text-gray-600 dark:bg-gray-400/15 dark:text-gray-400";
   const instrumentColor =
-    INSTRUMENT_TAG_COLORS[fav.instrument] ??
+    INSTRUMENT_TAG_COLORS[item.instrument] ??
     "bg-gray-400/20 text-gray-600 dark:bg-gray-400/15 dark:text-gray-400";
 
   return (
@@ -103,46 +106,35 @@ function FavoriteCard({
             <span
               className={`rounded-full px-2 py-0.5 font-medium ${moodColor}`}
             >
-              {fav.mood}
+              {item.mood}
             </span>
             <span
               className={`rounded-full px-2 py-0.5 font-medium ${instrumentColor}`}
             >
-              {fav.instrument.charAt(0).toUpperCase() + fav.instrument.slice(1)}
+              {item.instrument.charAt(0).toUpperCase() +
+                item.instrument.slice(1)}
             </span>
             <span className="text-text-secondary-light dark:text-text-secondary-dark">
-              {COMPLEXITY_LABELS[fav.complexity]}
+              {COMPLEXITY_LABELS[item.complexity]}
             </span>
           </div>
-          <div className="flex shrink-0 items-center gap-1">
-            <button
-              onClick={togglePlay}
-              aria-label={playing ? "Stop playback" : "Play progression"}
-              className={`cursor-pointer text-sm transition-colors ${
-                playing
-                  ? "text-primary dark:text-primary-light"
-                  : "text-primary/60 hover:text-primary dark:text-primary-light/60 dark:hover:text-primary-light"
-              }`}
-            >
-              {playing ? "⏹" : "▶"}
-            </button>
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                onRemove();
-              }}
-              aria-label="Remove from favorites"
-              className="shrink-0 cursor-pointer text-red-400 transition-colors hover:text-red-500"
-            >
-              ♥
-            </button>
-          </div>
+          <button
+            onClick={togglePlay}
+            aria-label={playing ? "Stop playback" : "Play progression"}
+            className={`cursor-pointer rounded-full p-2 text-sm transition-colors ${
+              playing
+                ? "bg-primary/20 text-primary dark:bg-primary-light/20 dark:text-primary-light"
+                : "bg-primary/10 text-primary/60 hover:text-primary dark:bg-primary-light/10 dark:text-primary-light/60 dark:hover:text-primary-light"
+            }`}
+          >
+            {playing ? "⏹" : "▶"}
+          </button>
         </div>
 
         <div className="flex items-center justify-between">
           <div>
             <div className="flex flex-wrap items-center gap-1 text-lg font-semibold">
-              {fav.chords.map((chord, i) => (
+              {item.chords.map((chord, i) => (
                 <span key={i} className="inline-flex items-center gap-1">
                   <span
                     onClick={(e) => e.stopPropagation()}
@@ -152,9 +144,9 @@ function FavoriteCard({
                         : ""
                     }`}
                   >
-                    <ChordTooltip chord={chord} instrument={fav.instrument} />
+                    <ChordTooltip chord={chord} instrument={item.instrument} />
                   </span>
-                  {i < fav.chords.length - 1 && (
+                  {i < item.chords.length - 1 && (
                     <span className="mx-0.5 text-text-secondary-light dark:text-text-secondary-dark">
                       →
                     </span>
@@ -163,7 +155,7 @@ function FavoriteCard({
               ))}
             </div>
             <p className="mt-1 text-sm text-text-secondary-light dark:text-text-secondary-dark">
-              Key of {fav.key}
+              Key of {item.key}
             </p>
           </div>
           <span
@@ -181,7 +173,7 @@ function FavoriteCard({
               Scale:{" "}
             </span>
             <span className="font-semibold text-text-light dark:text-text-dark">
-              {fav.scale}
+              {item.scale}
             </span>
           </div>
 
@@ -190,7 +182,7 @@ function FavoriteCard({
               Why it works
             </span>
             <p className="text-sm leading-relaxed text-text-light dark:text-text-dark">
-              {fav.theory}
+              {item.theory}
             </p>
           </div>
 
@@ -221,20 +213,41 @@ function FavoriteCard({
   );
 }
 
-const MOODS = ["Happy", "Sad", "Calm", "Energetic", "Melancholy", "Romantic"];
-
-const selectClass =
-  "cursor-pointer rounded-lg border border-gray-200 bg-surface-light px-2 py-1 text-xs text-text-light outline-none dark:border-gray-700 dark:bg-surface-dark dark:text-text-dark";
-
-export function FavoritesOverlay({
-  favorites,
-  onRemove,
+export function RecentlyViewedOverlay({
+  userId,
   onClose,
-}: FavoritesOverlayProps) {
+}: RecentlyViewedOverlayProps) {
   const panelRef = useRef<HTMLDivElement>(null);
-  const [moodFilter, setMoodFilter] = useState<string | null>(null);
-  const [instrumentFilter, setInstrumentFilter] = useState<string | null>(null);
-  const [levelFilter, setLevelFilter] = useState<number | null>(null);
+  const [items, setItems] = useState<RecentlyViewedItem[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (!supabase || !userId) return;
+    supabase
+      .from("recently_viewed")
+      .select("*")
+      .eq("user_id", userId)
+      .order("viewed_at", { ascending: false })
+      .limit(20)
+      .then(({ data }) => {
+        if (data) {
+          setItems(
+            data.map((r) => ({
+              id: r.id,
+              mood: r.mood,
+              instrument: r.instrument,
+              chords: r.chords as string[],
+              key: r.key,
+              scale: r.scale,
+              theory: r.theory,
+              complexity: r.complexity,
+              viewed_at: r.viewed_at,
+            })),
+          );
+        }
+        setLoading(false);
+      });
+  }, [userId]);
 
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
@@ -245,19 +258,12 @@ export function FavoritesOverlay({
     return () => document.removeEventListener("keydown", handleKey);
   }, [onClose]);
 
-  const filtered = favorites.filter((fav) => {
-    if (moodFilter && fav.mood !== moodFilter) return false;
-    if (instrumentFilter && fav.instrument !== instrumentFilter) return false;
-    if (levelFilter && fav.complexity !== levelFilter) return false;
-    return true;
-  });
-
   return (
     <div
       ref={panelRef}
       tabIndex={-1}
       role="dialog"
-      aria-label="Favorites"
+      aria-label="Recently viewed"
       className="fixed inset-0 z-50 flex justify-end outline-none"
     >
       <div
@@ -268,83 +274,36 @@ export function FavoritesOverlay({
       <div className="relative flex h-full w-full flex-col bg-bg-light sm:max-w-md dark:bg-bg-dark">
         <div className="flex items-center justify-between border-b border-gray-200 px-6 py-4 dark:border-gray-700">
           <h2 className="text-xl font-bold text-text-light dark:text-text-dark">
-            Favorites
+            Recently viewed
           </h2>
           <button
             onClick={onClose}
             className="cursor-pointer rounded-lg p-2 text-text-secondary-light transition-colors hover:bg-surface-light hover:text-text-light dark:text-text-secondary-dark dark:hover:bg-surface-dark dark:hover:text-text-dark"
-            aria-label="Close favorites"
+            aria-label="Close"
           >
             ✕
           </button>
         </div>
 
-        {favorites.length > 0 && (
-          <div className="flex items-center gap-2 border-b border-gray-200 px-6 py-3 dark:border-gray-700">
-            <select
-              value={moodFilter ?? ""}
-              onChange={(e) => setMoodFilter(e.target.value || null)}
-              className={selectClass}
-              aria-label="Filter by mood"
-            >
-              <option value="">All moods</option>
-              {MOODS.map((m) => (
-                <option key={m} value={m}>
-                  {m}
-                </option>
-              ))}
-            </select>
-            <select
-              value={instrumentFilter ?? ""}
-              onChange={(e) => setInstrumentFilter(e.target.value || null)}
-              className={selectClass}
-              aria-label="Filter by instrument"
-            >
-              <option value="">All</option>
-              <option value="guitar">Guitar</option>
-              <option value="piano">Piano</option>
-            </select>
-            <select
-              value={levelFilter ?? ""}
-              onChange={(e) =>
-                setLevelFilter(e.target.value ? Number(e.target.value) : null)
-              }
-              className={selectClass}
-              aria-label="Filter by level"
-            >
-              <option value="">All levels</option>
-              <option value="1">Beginner</option>
-              <option value="2">Intermediate</option>
-              <option value="3">Advanced</option>
-            </select>
-          </div>
-        )}
-
         <div className="flex-1 overflow-y-auto px-6 py-4">
-          {favorites.length === 0 ? (
+          {loading ? (
+            <div className="flex items-center justify-center py-20">
+              <span className="inline-block h-8 w-8 animate-spin rounded-full border-2 border-primary/30 border-t-primary dark:border-primary-light/30 dark:border-t-primary-light" />
+            </div>
+          ) : items.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-20 text-center">
-              <span className="mb-3 text-4xl">♡</span>
+              <span className="mb-3 text-4xl">🕐</span>
               <p className="text-lg font-medium text-text-light dark:text-text-dark">
-                No favorites yet
+                No recently viewed
               </p>
               <p className="mt-1 text-sm text-text-secondary-light dark:text-text-secondary-dark">
-                Tap the heart on any progression to save it here
-              </p>
-            </div>
-          ) : filtered.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-20 text-center">
-              <p className="text-sm text-text-secondary-light dark:text-text-secondary-dark">
-                No favorites match the current filters
+                Expand progressions to add them here
               </p>
             </div>
           ) : (
             <div className="flex flex-col gap-3">
-              {filtered.map((fav) => (
-                <FavoriteCard
-                  key={fav.id}
-                  fav={fav}
-                  onRemove={() => onRemove(fav.id)}
-                />
+              {items.map((item) => (
+                <RecentCard key={item.id} item={item} />
               ))}
             </div>
           )}

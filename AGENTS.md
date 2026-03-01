@@ -40,34 +40,45 @@ emuse/
 ├── index.html
 ├── api/
 │   └── generate-progressions.ts   # Serverless function (free text → LLM)
+├── supabase/
+│   └── schema.sql                 # Run in Supabase SQL Editor (profiles, favorites, collections, recently_viewed)
 ├── src/
 │   ├── main.tsx           # React entry point
 │   ├── App.tsx            # Root component, navigation state
+│   ├── contexts/
+│   │   └── AuthContext.tsx # Supabase auth, profile, sign up/in/out
 │   ├── index.css          # Tailwind imports
+│   ├── lib/
+│   │   └── supabase.ts            # Supabase client (null when env not set)
 │   ├── data/
 │   │   ├── progressions.json      # Static mood-progression dataset (90 entries)
 │   │   ├── chordData.ts           # Fingering data for 46 chords (guitar frets + piano notes)
 │   │   └── songData.ts            # Roman numeral analysis + famous songs pattern database
 │   ├── pages/
 │   │   ├── LandingPage.tsx        # Mood selection, free text input
-│   │   ├── InstrumentPage.tsx     # Guitar / Piano choice
-│   │   └── ProgressionsPage.tsx   # Progression list with expandable cards
+│   │   ├── InstrumentPage.tsx    # Guitar / Piano choice (legacy, not in main flow)
+│   │   ├── ProgressionsPage.tsx  # Progression list, instrument switcher, expandable cards
+│   │   ├── SignInPage.tsx         # Sign in form
+│   │   ├── SignUpPage.tsx         # Sign up form
+│   │   └── ProfilePage.tsx       # Profile, preferences
 │   ├── components/
 │   │   ├── MoodTile.tsx           # Mood selection tile with emoji + gradient
 │   │   ├── ProgressionCard.tsx    # Expandable card (scale, theory, hoverable chords)
-│   │   ├── ComplexityFilter.tsx   # Pill-style filter (Beginner/Intermediate/Advanced/All)
+│   │   ├── ComplexityFilter.tsx  # Pill-style filter (Beginner/Intermediate/Advanced/All)
 │   │   ├── ChordTooltip.tsx       # Hover wrapper — shows diagram tooltip, voicing nav
-│   │   ├── GuitarDiagram.tsx      # SVG fretboard renderer (dots, barres, open/muted)
-│   │   ├── PianoDiagram.tsx       # SVG piano keyboard renderer (highlighted keys + note names)
-│   │   ├── FavoritesOverlay.tsx   # Slide-in panel with filters, expandable cards + tooltips
-│   │   └── ThemeToggle.tsx        # Theme mode toggle button (Dark/Light/Mood)
+│   │   ├── GuitarDiagram.tsx     # SVG fretboard renderer (dots, barres, open/muted)
+│   │   ├── PianoDiagram.tsx      # SVG piano keyboard renderer (highlighted keys + note names)
+│   │   ├── FavoritesOverlay.tsx  # Slide-in panel (mood/instrument/level filters), expandable cards
+│   │   ├── RecentlyViewedOverlay.tsx  # Recently viewed progressions with chord view + play
+│   │   └── ThemeToggle.tsx       # Theme mode toggle button (Dark/Light/Mood)
 │   ├── hooks/
 │   │   ├── useNavigation.ts       # State-based navigation (no React Router)
 │   │   ├── useFavorites.ts        # localStorage persistence (add/remove/toggle/isFavorite)
 │   │   └── useTheme.ts            # 3-mode theme (dark/light/mood) with localStorage persistence
 │   ├── services/
 │   │   ├── api.ts                 # Client-side API call (generateProgressions)
-│   │   └── audioEngine.ts         # Web Audio API chord synthesis (play/stop progressions)
+│   │   ├── audioEngine.ts         # Web Audio API chord synthesis (play/stop progressions)
+│   │   └── recentlyViewed.ts      # Record progression views to Supabase
 ```
 
 ## Technology Stack
@@ -250,6 +261,8 @@ If the answer is anything — update the docs before moving on.
 10. **Song matching uses Roman numeral analysis** — `songData.ts` converts chord progressions to Roman numeral patterns (e.g., C-G-Am-F in C = "I-V-vi-IV") and looks up matching famous songs. The analysis handles both major and minor keys correctly (different flat-interval sets). For longer progressions, it tries subsequence matching with 4-chord then 3-chord windows. The database has 25+ patterns covering 50+ songs.
 
 11. **3-mode theme toggle** — Cycles Dark → Light → Mood via a bottom-left button. Mood mode applies per-mood pastel gradient backgrounds with a `darkText` flag per mood to control whether the `dark` class is applied (light text on dark gradients, dark text on bright gradients). Theme is stored in localStorage under `emuse-theme`. The body gets `transition: background 0.6s ease` for smooth gradient changes.
+
+12. **Phase 6: Supabase for profiles** — Auth (sign up/in/out), profiles (display name, avatar, instrument/theme prefs), cloud-synced favorites, recently viewed. Mood selection goes directly to progressions using profile default instrument. Instrument switcher on progressions page. Recently viewed overlay (clock icon) with chord view and play. App works without Supabase (profile button hidden when `VITE_SUPABASE_URL` not set). `useFavorites` uses localStorage when guest, Supabase when logged in. Run `supabase/schema.sql` in project SQL Editor before using profiles.
 
 ## Gotchas & Lessons Learned
 

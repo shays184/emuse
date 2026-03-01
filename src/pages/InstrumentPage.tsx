@@ -1,9 +1,12 @@
+import { useEffect } from "react";
 import type { Instrument } from "../hooks/useNavigation";
 
 interface InstrumentPageProps {
   mood: string;
   onSelect: (instrument: Instrument) => void;
   onBack: () => void;
+  preferredInstrument?: Instrument | null;
+  fromLanding?: boolean;
 }
 
 const INSTRUMENTS: { id: Instrument; label: string; emoji: string }[] = [
@@ -15,7 +18,15 @@ export function InstrumentPage({
   mood,
   onSelect,
   onBack,
+  preferredInstrument,
+  fromLanding,
 }: InstrumentPageProps) {
+  useEffect(() => {
+    if (fromLanding && preferredInstrument) {
+      onSelect(preferredInstrument);
+    }
+  }, [fromLanding, preferredInstrument, onSelect]);
+
   return (
     <main className="flex min-h-screen flex-col items-center px-4 pt-16">
       <button

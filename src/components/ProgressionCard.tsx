@@ -18,8 +18,10 @@ interface Progression {
 interface ProgressionCardProps {
   progression: Progression;
   instrument: string;
+  mood?: string;
   isFavorite: boolean;
   onToggleFavorite: () => void;
+  onView?: (progression: Progression) => void;
 }
 
 const COMPLEXITY_LABELS: Record<number, string> = {
@@ -37,8 +39,10 @@ const COMPLEXITY_COLORS: Record<number, string> = {
 export function ProgressionCard({
   progression,
   instrument,
+  mood,
   isFavorite,
   onToggleFavorite,
+  onView,
 }: ProgressionCardProps) {
   const [expanded, setExpanded] = useState(false);
   const [playing, setPlaying] = useState(false);
@@ -75,7 +79,11 @@ export function ProgressionCard({
       <div
         role="button"
         tabIndex={0}
-        onClick={() => setExpanded(!expanded)}
+        onClick={() => {
+          const next = !expanded;
+          setExpanded(next);
+          if (next && onView && mood) onView(progression);
+        }}
         onKeyDown={(e) => {
           if (e.key === "Enter" || e.key === " ") {
             e.preventDefault();
